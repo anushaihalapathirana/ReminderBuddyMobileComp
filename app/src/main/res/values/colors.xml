@@ -10,4 +10,8 @@
     <color name="green">#7CB342</color>
     <color name="btnTxtColor">#F4F4F4</color>
     <color name="btnbackgroundTint">#A3FFFFFF</color>
+    <color name="pinbtncolor">#A3FFFFFF</color>
+    <color name="errorText">#E42525</color>
+    <color name="app_background">#73F2F2F2</color>
+    <color name="red">#DB3022</color>
 </resources>

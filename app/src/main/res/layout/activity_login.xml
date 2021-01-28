@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/loginbackground"
+    android:background="@color/app_background"
     android:backgroundTint="#80FFFFFF"
     android:backgroundTintMode="src_over"
     tools:context=".LoginActivity">
@@ -12,20 +12,20 @@
 
     <EditText
         android:id="@+id/editTextTextPersonName"
-        android:layout_width="wrap_content"
+        android:layout_width="308dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="272dp"
+        android:layout_marginTop="216dp"
         android:ems="10"
         android:hint="Username"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.456"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/editTextTextPassword"
-        android:layout_width="wrap_content"
+        android:layout_width="308dp"
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="Password"
@@ -39,19 +39,17 @@
 
     <TextView
         android:id="@+id/logintxtview"
-        android:layout_width="199dp"
+        android:layout_width="wrap_content"
         android:layout_height="45dp"
         android:layout_gravity="left"
-        android:gravity="left
-"
+        android:layout_marginTop="144dp"
+        android:gravity="left"
         android:text="LOGIN"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/editTextTextPersonName"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.471"
+        app:layout_constraintHorizontal_bias="0.133"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.689" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/welcometxt"
@@ -61,6 +59,7 @@
         android:gravity="center_horizontal"
         android:text="WELCOME"
         android:textSize="30sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/logintxtview"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"
@@ -70,19 +69,28 @@
 
     <Button
         android:id="@+id/loginbtninactivity"
-        android:layout_width="250dp"
+        style="@style/AppTheme.RoundedCornerButton"
+        android:layout_width="300dp"
         android:layout_height="60dp"
-        android:background="@color/btnbackgroundTint"
+        android:layout_marginTop="428dp"
         android:text="@string/signup"
         android:textColor="@color/btnTxtColor"
         android:textSize="18sp"
-        app:backgroundTint="@color/btnbackgroundTint"
         app:cornerRadius="15dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.657" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/errorbanner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/editTextTextPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@color/errorText"
+        android:textSize="15sp"
+        app:layout_constraintTop_toBottomOf="@+id/logintxtview" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

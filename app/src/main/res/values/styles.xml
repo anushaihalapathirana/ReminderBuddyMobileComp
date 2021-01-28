@@ -4,4 +4,13 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
     </style>
+
+
+    <style name="AppTheme.RoundedCornerMaterialButton" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:background">@drawable/button_backgound</item>
+    </style>
+
+    <style name="AppTheme.RoundedCornerButton" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:background">@drawable/round_btn</item>
+    </style>
 </resources>

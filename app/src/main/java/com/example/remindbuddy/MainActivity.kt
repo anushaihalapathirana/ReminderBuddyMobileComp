@@ -14,8 +14,17 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.loginbtn).setOnClickListener {
             Log.d("Login", "Click login")
-            applicationContext.getSharedPreferences(getString(R.string.sharedPreference), Context.MODE_PRIVATE).edit().putInt("LoginStatus", 1).apply()
             startActivity(Intent(applicationContext, LoginActivity::class.java))
+        }
+
+        findViewById<Button>(R.id.pinbtnlogin).setOnClickListener {
+            Log.d("Login", "Pin Code")
+            startActivity(Intent(applicationContext, PincodeActivity::class.java))
+        }
+
+        findViewById<Button>(R.id.signupbtn).setOnClickListener {
+            Log.d("Login", "SignUp")
+            startActivity(Intent(applicationContext, SignupActivity::class.java))
         }
         // check login status
         checkLoginStatus()
@@ -24,7 +33,7 @@ class MainActivity : AppCompatActivity() {
     private fun checkLoginStatus() {
         val loginStatus = applicationContext.getSharedPreferences(getString(R.string.sharedPreference), Context.MODE_PRIVATE).getInt("LoginStatus",0)
         if(loginStatus == 1) {
-            startActivity(Intent(applicationContext, LoginActivity::class.java))
+            //startActivity(Intent(applicationContext, MainActivity::class.java))
         }
     }
 }

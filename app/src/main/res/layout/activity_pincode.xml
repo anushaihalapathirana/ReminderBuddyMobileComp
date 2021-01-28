@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_background"
+    android:backgroundTint="#80FFFFFF"
+    android:backgroundTintMode="src_over"
+    tools:context=".PincodeActivity">
+
+
+    <TextView
+        android:id="@+id/pintxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:text="WELCOME"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/enterpintxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="120dp"
+        android:text="ENTER YOUR PIN"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.194"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/editTextTextPassword2"
+        android:layout_width="62dp"
+        android:layout_height="73dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="72dp"
+        android:ems="10"
+        android:gravity="center_horizontal"
+        android:inputType="textPassword"
+        android:textSize="50sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.163"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pintxt" />
+
+    <EditText
+        android:id="@+id/editTextTextPassword3"
+        android:layout_width="64dp"
+        android:layout_height="73dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="72dp"
+        android:ems="10"
+        android:gravity="center_horizontal"
+        android:inputType="textPassword"
+        android:textSize="50sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.397"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pintxt" />
+
+    <EditText
+        android:id="@+id/editTextTextPassword4"
+        android:layout_width="64dp"
+        android:layout_height="73dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="72dp"
+        android:ems="10"
+        android:gravity="center_horizontal"
+        android:inputType="textPassword"
+        android:textSize="50sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.625"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pintxt" />
+
+    <EditText
+        android:id="@+id/editTextTextPassword5"
+        android:layout_width="64dp"
+        android:layout_height="73dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="72dp"
+        android:ems="10"
+        android:gravity="center_horizontal"
+        android:inputType="textPassword"
+        android:textSize="50sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.853"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pintxt" />
+
+    <Button
+        android:id="@+id/imageButton1"
+        style="@style/AppTheme.RoundedCornerMaterialButton"
+        android:layout_width="61dp"
+        android:layout_height="59dp"
+        android:layout_marginTop="336dp"
+        android:text="1"
+        android:textColor="#B7515151"
+        android:textSize="24sp"
+        app:fabSize="auto"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.171"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/imageButton4"
+        style="@style/AppTheme.RoundedCornerMaterialButton"
+        android:layout_width="61dp"
+        android:layout_height="59dp"
+        android:layout_marginTop="424dp"
+        android:text="4"
+        android:textColor="#B7515151"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.171"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/imageButton5"
+        style="@style/AppTheme.RoundedCornerMaterialButton"
+        android:layout_width="61dp"
+        android:layout_height="59dp"
+        android:layout_marginTop="424dp"
+        android:text="5"
+        android:textColor="#B7515151"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/imageButton6"
+        style="@style/AppTheme.RoundedCornerMaterialButton"
+        android:layout_width="61dp"
+        android:layout_height="59dp"
+        android:layout_marginTop="424dp"
+        android:text="6"
+        android:textColor="#B7515151"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.802"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/imageButton7"
+        style="@style/AppTheme.RoundedCornerMaterialButton"
+        android:layout_width="61dp"
+        android:layout_height="59dp"
+        android:layout_marginTop="512dp"
+        android:text="7"
+        android:textColor="#B7515151"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.165"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/imageButton9"
+        style="@style/AppTheme.RoundedCornerMaterialButton"
+        android:layout_width="61dp"
+        android:layout_height="59dp"
+        android:layout_marginTop="512dp"
+        android:text="9"
+        android:textColor="#B7515151"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.802"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/imageButton0"
+        style="@style/AppTheme.RoundedCornerMaterialButton"
+        android:layout_width="61dp"
+        android:layout_height="59dp"
+        android:layout_marginTop="600dp"
+        android:text="0"
+        android:textColor="#B7515151"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/backspacebtn"
+        style="@style/AppTheme.RoundedCornerMaterialButton"
+        android:layout_width="61dp"
+        android:layout_height="59dp"
+        android:layout_marginTop="600dp"
+        android:src="@drawable/backspace"
+        android:scaleType="fitCenter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.802"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/imageButton8"
+        style="@style/AppTheme.RoundedCornerMaterialButton"
+        android:layout_width="61dp"
+        android:layout_height="59dp"
+        android:layout_marginTop="512dp"
+        android:text="8"
+        android:textColor="#B7515151"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/imageButton2"
+        style="@style/AppTheme.RoundedCornerMaterialButton"
+        android:layout_width="61dp"
+        android:layout_height="59dp"
+        android:layout_marginTop="336dp"
+        android:text="2"
+        android:textColor="#B7515151"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/imageButton3"
+        style="@style/AppTheme.RoundedCornerMaterialButton"
+        android:layout_width="61dp"
+        android:layout_height="59dp"
+        android:layout_marginTop="336dp"
+        android:text="3"
+        android:textColor="#B7515151"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.802"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/errtxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="148dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.491"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@color/errorText"
+        android:textSize="15sp"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
