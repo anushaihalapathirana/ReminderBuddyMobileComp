@@ -27,13 +27,18 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(applicationContext, SignupActivity::class.java))
         }
         // check login status
+        val loginStatus = applicationContext.getSharedPreferences(getString(R.string.sharedPreference), Context.MODE_PRIVATE).getInt("LoginStatus",0)
+        Log.d("Login status", loginStatus.toString())
         checkLoginStatus()
     }
 
     private fun checkLoginStatus() {
         val loginStatus = applicationContext.getSharedPreferences(getString(R.string.sharedPreference), Context.MODE_PRIVATE).getInt("LoginStatus",0)
+        Log.d("Login status", loginStatus.toString())
         if(loginStatus == 1) {
-            //startActivity(Intent(applicationContext, MainActivity::class.java))
+            startActivity(Intent(applicationContext, MenuActivity::class.java))
+        } else {
+            Log.d("Login status else ", loginStatus.toString())
         }
     }
 }

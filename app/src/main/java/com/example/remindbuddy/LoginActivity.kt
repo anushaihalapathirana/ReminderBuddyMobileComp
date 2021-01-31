@@ -13,11 +13,14 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        val registertxt = findViewById<TextView>(R.id.registertxt)
+
         findViewById<Button>(R.id.loginbtninactivity).setOnClickListener {
             Log.d("Login", "User Logged in")
             val username = findViewById<TextView>(R.id.editTextTextPersonName).text
             val password = findViewById<TextView>(R.id.editTextTextPassword).text
             val errorMessage = findViewById<TextView>(R.id.errorbanner);
+
             Log.d("Password", password.toString())
             Log.d("Username", username.toString())
 
@@ -28,6 +31,10 @@ class LoginActivity : AppCompatActivity() {
             } else {
                 errorMessage.setText("Username or Password is Incorrect.")
             }
+        }
+
+        registertxt.setOnClickListener {
+            startActivity(Intent(applicationContext, MainActivity::class.java))
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.example.remindbuddy
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
@@ -54,6 +55,10 @@ class SignupActivity : AppCompatActivity() {
                 passworderr.setText("")
                 confpasserr.setText("")
                 Log.d("Sign In", "Account successfully created")
+                applicationContext.getSharedPreferences(getString(R.string.sharedPreference), Context.MODE_PRIVATE).edit().putString("name", name.text.toString()).apply()
+                applicationContext.getSharedPreferences(getString(R.string.sharedPreference), Context.MODE_PRIVATE).edit().putString("username", username.text.toString()).apply()
+                applicationContext.getSharedPreferences(getString(R.string.sharedPreference), Context.MODE_PRIVATE).edit().putString("email", email.text.toString()).apply()
+                applicationContext.getSharedPreferences(getString(R.string.sharedPreference), Context.MODE_PRIVATE).edit().putString("password", password.text.toString()).apply()
                 startActivity(Intent(applicationContext, LoginActivity::class.java))
             } else {
                 if(name.text.toString().trim().length==0) {
