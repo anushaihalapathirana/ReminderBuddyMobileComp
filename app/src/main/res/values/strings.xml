@@ -12,8 +12,8 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
-    <string name="menu_home">Home</string>
+    <string name="menu_home">My List</string>
     <string name="menu_gallery">Profile</string>
-    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_slideshow">Planned</string>
     <string name="logout">Logout</string>
 </resources>

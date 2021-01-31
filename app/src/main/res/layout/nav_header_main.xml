@@ -13,12 +13,14 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/profimgnav"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:contentDescription="@string/nav_header_desc"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        app:srcCompat="@drawable/logo" />
+        android:scaleType="centerCrop"
+        app:layout_constraintCircleRadius="25dp"
+        app:srcCompat="@drawable/profile" />
 
     <TextView
         android:id="@+id/navheadtxtname"

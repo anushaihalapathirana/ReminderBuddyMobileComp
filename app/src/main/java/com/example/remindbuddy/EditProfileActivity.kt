@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
@@ -51,6 +52,10 @@ class EditProfileActivity : AppCompatActivity() {
 
         if(savedppicture == "") {
             imageView.setImageResource(R.drawable.profile)
+        } else {
+            val imageBytes = Base64.decode(savedppicture, Base64.DEFAULT)
+            val decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+            imageView.setImageBitmap(decodedImage)
         }
 
         name.setText(savedname.toString())

@@ -17,7 +17,7 @@
         app:layout_constraintHorizontal_bias="0.842"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/editicon" />
+        app:srcCompat="@drawable/edit" />
 
     <ImageView
         android:id="@+id/editprofimage"

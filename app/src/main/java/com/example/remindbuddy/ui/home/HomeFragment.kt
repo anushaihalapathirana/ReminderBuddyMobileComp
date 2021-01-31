@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.remindbuddy.R
 import com.example.remindbuddy.ReminderAdapter
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 
 class HomeFragment : Fragment() {
 
@@ -35,6 +37,15 @@ class HomeFragment : Fragment() {
             R.drawable.i2,R.drawable.i6,R.drawable.i5,
             R.drawable.i1
         )
+
+        // floating button click
+        val fab: FloatingActionButton = root.findViewById(R.id.editbtn)
+        fab.setOnClickListener { view ->
+            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show()
+        }
+
+
 
         val desc = arrayListOf<String>("Shopping with Anna and shan", "call around 9.30pm",
         "machine vision first assignment. followup with group members",

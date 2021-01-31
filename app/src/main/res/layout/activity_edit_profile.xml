@@ -32,7 +32,7 @@
             app:layout_constraintHorizontal_bias="0.853"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/plusicon" />
+            app:srcCompat="@drawable/edit" />
 
         <ImageView
             android:id="@+id/editprofimage"

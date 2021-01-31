@@ -13,4 +13,9 @@
     <style name="AppTheme.RoundedCornerButton" parent="Widget.AppCompat.Button.Colored">
         <item name="android:background">@drawable/round_btn</item>
     </style>
+
+    <style name="CustomCheckbox02" parent="@style/Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/checkbox_selectors</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
 </resources>
