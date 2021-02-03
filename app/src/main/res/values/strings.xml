@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">RemindBuddy</string>
-    <string name="login">Login Using Password</string>
+    <string name="login">Password</string>
+    <string name="pin">PIN</string>
     <string name="signup">Sign Up</string>
     <string name="save">Save</string>
     <string name="sharedPreference">com.example.remindbuddy</string>

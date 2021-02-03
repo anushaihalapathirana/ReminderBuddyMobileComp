@@ -42,6 +42,7 @@ class GalleryFragment : Fragment() {
         val emailtxt = root.findViewById<TextView>(R.id.emailtxtg)
         val passwordtxt = root.findViewById<TextView>(R.id.passtxtg)
         val image = root.findViewById<ImageView>(R.id.editprofimage)
+        val pin = root.findViewById<TextView>(R.id.passtxtg2)
 
         val prefs = activity?.getSharedPreferences(
             getString(R.string.sharedPreference),
@@ -52,6 +53,7 @@ class GalleryFragment : Fragment() {
         val savedusername = prefs!!.getString("username","johndoe")
         val savedpassword = prefs!!.getString("password","123456")
         val photobase = prefs!!.getString("photo", "")
+        val savedpin = prefs!!.getString("pin", "1111")
 
         if(photobase == "") {
             Log.d("Photo", "No profile picture saved")
@@ -63,13 +65,11 @@ class GalleryFragment : Fragment() {
             image.setImageBitmap(decodedImage)
         }
 
-
-
         name.setText(savedname.toString())
         usernametxt.setText(savedusername.toString())
         emailtxt.setText(savedemail.toString())
         passwordtxt.setText(savedpassword.toString())
-
+        pin.setText(savedpin.toString())
         return root
     }
 }

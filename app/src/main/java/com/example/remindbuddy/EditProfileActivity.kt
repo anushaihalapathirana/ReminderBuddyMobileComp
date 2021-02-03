@@ -41,7 +41,9 @@ class EditProfileActivity : AppCompatActivity() {
         val emailtxt = findViewById<EditText>(R.id.emailtxtg)
         val passwordtxt = findViewById<EditText>(R.id.passtxtg)
         val conpasstxt = findViewById<EditText>(R.id.conpasstxt)
+        val pintxt = findViewById<EditText>(R.id.conpasstxt2)
         val err = findViewById<TextView>(R.id.errmsg)
+        val errorpin = findViewById<TextView>(R.id.errpin)
         val savebtn = findViewById<Button>(R.id.savebtn)
 
         val savedname = applicationContext.getSharedPreferences(getString(R.string.sharedPreference), Context.MODE_PRIVATE).getString("name", "Jane Doe")
@@ -49,6 +51,7 @@ class EditProfileActivity : AppCompatActivity() {
         val savedusername = applicationContext.getSharedPreferences(getString(R.string.sharedPreference), Context.MODE_PRIVATE).getString("username", "johndoe")
         val savedpassword = applicationContext.getSharedPreferences(getString(R.string.sharedPreference), Context.MODE_PRIVATE).getString("password", "123456")
         val savedppicture = applicationContext.getSharedPreferences(getString(R.string.sharedPreference), Context.MODE_PRIVATE).getString("photo", "")
+        val savedpin = applicationContext.getSharedPreferences(getString(R.string.sharedPreference), Context.MODE_PRIVATE).getString("pin", "1111")
 
         if(savedppicture == "") {
             imageView.setImageResource(R.drawable.profile)
@@ -63,20 +66,28 @@ class EditProfileActivity : AppCompatActivity() {
         emailtxt.setText(savedemail.toString())
         passwordtxt.setText(savedpassword.toString())
         conpasstxt.setText(savedpassword.toString())
-
+        pintxt.setText(savedpin.toString())
 
 
         savebtn.setOnClickListener {
-            if(isValidPass(passwordtxt.text.toString(), conpasstxt.text.toString())) {
+            if(isValidPass(passwordtxt.text.toString(), conpasstxt.text.toString()) && pintxt.text.toString().length==4) {
                 Log.d("Edit profile", "Save successfully")
                 applicationContext.getSharedPreferences(getString(R.string.sharedPreference), Context.MODE_PRIVATE).edit().putString("name", name.text.toString()).apply()
                 applicationContext.getSharedPreferences(getString(R.string.sharedPreference), Context.MODE_PRIVATE).edit().putString("username", usernametxt.text.toString()).apply()
                 applicationContext.getSharedPreferences(getString(R.string.sharedPreference), Context.MODE_PRIVATE).edit().putString("email", emailtxt.text.toString()).apply()
                 applicationContext.getSharedPreferences(getString(R.string.sharedPreference), Context.MODE_PRIVATE).edit().putString("password", passwordtxt.text.toString()).apply()
+                applicationContext.getSharedPreferences(getString(R.string.sharedPreference), Context.MODE_PRIVATE).edit().putString("pin", pintxt.text.toString()).apply()
+
                 startActivity(Intent(applicationContext, MenuActivity::class.java))
             } else {
-                Log.d("Edit profile", "Save failed")
-                err.setText("Password not matching")
+                if(!isValidPass(passwordtxt.text.toString(), conpasstxt.text.toString())) {
+                    Log.d("Edit profile", "Save failed")
+                    err.setText("Password not matching")
+                }
+                if(pintxt.text.toString().length!=4) {
+                    Log.d("Edit profile", "Save failed")
+                    errorpin.setText("Please enter 4 digit PIN")
+                }
             }
         }
 

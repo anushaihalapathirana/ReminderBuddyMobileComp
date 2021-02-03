@@ -10,16 +10,16 @@
             android:id="@+id/savebtn"
             style="@style/AppTheme.RoundedCornerButton"
             android:layout_width="300dp"
-            android:layout_height="60dp"
-            android:layout_marginTop="684dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="164dp"
             android:text="@string/save"
             android:textColor="@color/btnTxtColor"
             android:textSize="18sp"
             app:cornerRadius="15dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.459"
+            app:layout_constraintHorizontal_bias="0.476"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/conpasstxt" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/editbtn"
@@ -115,6 +115,20 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <TextView
+            android:id="@+id/profusername6"
+            android:layout_width="307dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="668dp"
+            android:text="PIN"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.347"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <EditText
             android:id="@+id/usernametxtg"
             android:layout_width="308dp"
@@ -165,16 +179,42 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <EditText
+            android:id="@+id/conpasstxt2"
+            android:layout_width="308dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="692dp"
+            android:inputType="numberPassword"
+            android:maxLength="4"
+            android:text="1111"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.486"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/errmsg"
-            android:layout_width="wrap_content"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:gravity="left"
             android:textColor="@color/errorText"
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.206"
+            app:layout_constraintHorizontal_bias="0.549"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/conpasstxt" />
+
+        <TextView
+            android:id="@+id/errpin"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:textColor="@color/errorText"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.549"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/conpasstxt2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

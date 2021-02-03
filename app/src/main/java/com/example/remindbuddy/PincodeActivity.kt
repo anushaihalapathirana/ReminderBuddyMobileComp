@@ -116,7 +116,9 @@ class PincodeActivity : AppCompatActivity() {
 
     private fun navigateToMenue(txt1: TextView, txt2: TextView, txt3: TextView, txt4: TextView) {
         val errTxt = findViewById<TextView>(R.id.errtxt)
-        if (txt1.text.toString() == "1" && txt2.text.toString() == "1" && txt3.text.toString() == "1" && txt4.text.toString() == "1" ) {
+        val savedpin = applicationContext.getSharedPreferences(getString(R.string.sharedPreference), Context.MODE_PRIVATE).getString("pin", "1111")
+
+        if ((txt1.text.toString() + txt2.text.toString() + txt3.text.toString() + txt4.text.toString()) == savedpin.toString() ) {
             errTxt.setText("")
             Handler().postDelayed({
                 applicationContext.getSharedPreferences(getString(R.string.sharedPreference), Context.MODE_PRIVATE).edit().putInt("LoginStatus", 1).apply()

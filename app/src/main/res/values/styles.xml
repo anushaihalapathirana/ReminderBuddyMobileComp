@@ -18,4 +18,8 @@
         <item name="android:button">@drawable/checkbox_selectors</item>
         <item name="android:background">@android:color/transparent</item>
     </style>
+
+    <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/red</item>
+    </style>
 </resources>

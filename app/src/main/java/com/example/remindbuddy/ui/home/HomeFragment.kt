@@ -1,6 +1,7 @@
 package com.example.remindbuddy.ui.home
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,6 +10,8 @@ import android.view.ViewGroup
 import android.widget.ListView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.remindbuddy.AddTaskActivity
+import com.example.remindbuddy.EditProfileActivity
 import com.example.remindbuddy.R
 import com.example.remindbuddy.ReminderAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -41,8 +44,9 @@ class HomeFragment : Fragment() {
         // floating button click
         val fab: FloatingActionButton = root.findViewById(R.id.editbtn)
         fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+//            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                .setAction("Action", null).show()
+            startActivity(Intent(activity, AddTaskActivity::class.java))
         }
 
 

@@ -13,72 +13,93 @@
         android:id="@+id/signupbtn"
         style="@style/AppTheme.RoundedCornerButton"
         android:layout_width="300dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="412dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="9dp"
         android:text="@string/signup"
-        android:textColor="@color/btnTxtColor"
+        android:textColor="@color/red"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <Button
         android:id="@+id/loginbtn"
         style="@style/AppTheme.RoundedCornerButton"
-        android:layout_width="300dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="32dp"
+        android:layout_width="140dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="8dp"
         android:text="@string/login"
-        android:textColor="@color/btnTxtColor"
+        android:textColor="@color/red"
         android:textSize="18sp"
         app:cornerRadius="10dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintHorizontal_bias="0.21"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signupbtn" />
+        app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
     <TextView
         android:id="@+id/logintxt"
         android:layout_width="357dp"
         android:layout_height="34dp"
         android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
         android:gravity="center_horizontal"
-        android:text="Reminder Buddy hks yoais ouis jkas oasid apso"
+        android:text="Make your todo list with Reminder Buddy"
         android:textAlignment="center"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/signupbtn"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profimgnav"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@+id/profimgnav" />
 
     <ImageView
         android:id="@+id/profimgnav"
-        android:layout_width="162dp"
-        android:layout_height="211dp"
-        android:layout_marginTop="104dp"
-        app:layout_constraintBottom_toTopOf="@+id/signupbtn"
+        android:layout_width="229dp"
+        android:layout_height="224dp"
+        android:layout_marginTop="56dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/logo" />
 
     <Button
         android:id="@+id/pinbtnlogin"
         style="@style/AppTheme.RoundedCornerButton"
+        android:layout_width="140dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/pin"
+        android:textColor="@color/red"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.243"
+        app:layout_constraintStart_toEndOf="@+id/loginbtn"
+        app:layout_constraintTop_toBottomOf="@+id/textView13" />
+
+    <TextView
+        android:id="@+id/textView"
         android:layout_width="300dp"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="248dp"
+        android:text="New to Reminder Buddy?"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.513"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logintxt" />
+
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="Login using PIN"
-        android:textColor="@color/btnTxtColor"
+        android:text="Already have a account?"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loginbtn" />
+        app:layout_constraintTop_toBottomOf="@+id/signupbtn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

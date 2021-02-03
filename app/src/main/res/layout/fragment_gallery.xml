@@ -87,6 +87,20 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/profusername5"
+        android:layout_width="73dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="620dp"
+        android:text="PIN"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.156"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
         android:id="@+id/usernametxtg"
         android:layout_width="308dp"
         android:layout_height="wrap_content"
@@ -117,6 +131,19 @@
         android:layout_marginTop="576dp"
         android:inputType="textPassword"
         android:text="123456"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.514"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/passtxtg2"
+        android:layout_width="308dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="648dp"
+        android:inputType="textPassword"
+        android:text="1111"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.514"
