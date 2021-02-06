@@ -1,13 +1,9 @@
 package com.example.remindbuddy.ui.home
 
 import android.app.Activity
-import android.app.AlarmManager
-import android.app.PendingIntent
-import android.content.Context
 import android.content.Intent
 import android.os.AsyncTask
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -62,8 +58,6 @@ class HomeFragment : Fragment() {
             builder.setTitle("Delete reminder?")
                 .setMessage(message)
                 .setPositiveButton("Delete") { _, _ ->
-                    // Update UI
-
 
                     //delete from database
                     AsyncTask.execute {
@@ -79,9 +73,22 @@ class HomeFragment : Fragment() {
                     //refresh payments list
                     refreshListView()
                 }
-                .setNegativeButton("Cancel") { dialog, _ ->
+                .setNeutralButton("Cancel") { dialog, _ ->
                     // Do nothing
                     dialog.dismiss()
+                }
+                .setNegativeButton("Edit") { dialog, _ ->
+                    val intent = Intent(context as Activity, AddTaskActivity::class.java)
+                    intent.putExtra("uid", selectedReminder.uid)
+                    intent.putExtra("title", selectedReminder.title )
+                    intent.putExtra("message", selectedReminder.message )
+                    intent.putExtra("message", selectedReminder.message )
+                    intent.putExtra("locationx", selectedReminder.locationx )
+                    intent.putExtra("locationy", selectedReminder.locationy )
+                    intent.putExtra("remindertime", selectedReminder.remindertime )
+                    intent.putExtra("reminderdate", selectedReminder.reminderdate )
+                    intent.putExtra("image", selectedReminder.image )
+                    startActivity(intent)
                 }
                 .show()
 
@@ -101,7 +108,11 @@ class HomeFragment : Fragment() {
 
     inner class LoadPaymentInfoEntries : AsyncTask<String?, String?, List<Reminder>>() {
         override fun doInBackground(vararg params: String?): List<Reminder> {
-            val db = Room.databaseBuilder( context as Activity, AppDatabase::class.java, getString(R.string.dbFileName))
+            val db = Room.databaseBuilder(
+                context as Activity,
+                AppDatabase::class.java,
+                getString(R.string.dbFileName)
+            )
                 .build()
             val paymentInfos = db.paymentDao().getPaymentInfos()
             db.close()

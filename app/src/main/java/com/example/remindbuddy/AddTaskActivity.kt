@@ -5,6 +5,7 @@ import android.app.TimePickerDialog
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.AsyncTask
 import android.os.Bundle
@@ -21,9 +22,13 @@ import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
 import java.util.*
 
+
 class AddTaskActivity : AppCompatActivity() {
     private val pickImage = 100
     private var imageUri: Uri? = null
+    private var isUpdate = false
+    private var uid = 0
+    private var savedimg = ""
     val MONTHS = listOf<String>(
         "Jan",
         "Feb",
@@ -60,6 +65,28 @@ class AddTaskActivity : AppCompatActivity() {
         addImage = findViewById(R.id.addimagetxt)
         deleteimagebtn = findViewById(R.id.deletebtn)
         deleteimagebtn.visibility = View.GONE
+
+        val extras = intent.extras
+        if (extras != null) {
+            isUpdate = true
+            uid = extras.getInt("uid")
+            title.setText(extras.getString("title"))
+            description.setText(extras.getString("message"))
+            location.setText(extras.getString("locationx"))
+            dateText.setText(extras.getString("reminderdate"))
+            timeText.setText(extras.getString("remindertime"))
+            addReminder.setText("update")
+
+            savedimg = extras.getString("image").toString()
+            if(savedimg == "") {
+//            imageView.setImageResource(R.drawable.profile)
+            } else {
+                deleteimagebtn.visibility = View.VISIBLE
+                val imageBytes = Base64.decode(extras.getString("image"), Base64.DEFAULT)
+                val decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+                imageView.setImageBitmap(decodedImage)
+            }
+        }
 
         val c = Calendar.getInstance()
         val year = c.get(Calendar.YEAR)
@@ -106,31 +133,57 @@ class AddTaskActivity : AppCompatActivity() {
 
         deleteimagebtn.setOnClickListener {
             imageView.setImageURI(null)
+            imageView.setImageBitmap(null)
             deleteimagebtn.visibility = View.GONE
         }
 
         addReminder.setOnClickListener {
-            var reminder = Reminder(
-                null,
-                title = title.text.toString(),
-                message = description.text.toString(),
-                locationx = location.text.toString(),
-                locationy = location.text.toString(),
-                remindertime = timeText.text.toString(),
-                reminderdate = dateText.text.toString(),
-                image = imagestr,
-            )
+            if(isUpdate) {
 
-            AsyncTask.execute {
-                //save payment to room datbase
-                val db = Room.databaseBuilder(
-                    applicationContext,
-                    AppDatabase::class.java,
-                    getString(R.string.dbFileName)
-                ).build()
-                val uuid = db.paymentDao().insert(reminder).toInt()
-                db.close()
+                val bitmap = (imageView.getDrawable() as BitmapDrawable).bitmap
+                val img = encodeImage(bitmap)
+                AsyncTask.execute {
+                    val db = Room.databaseBuilder(
+                        applicationContext,
+                        AppDatabase::class.java,
+                        getString(R.string.dbFileName)
+                    ).build()
+                    db.paymentDao().update(
+                        uid,
+                        title.text.toString(),
+                        description.text.toString(),
+                        location.text.toString(),
+                        location.text.toString(),
+                        timeText.text.toString(),
+                        dateText.text.toString(),
+                        img.toString()
+                    )
+                    db.close()
 
+                }
+            } else {
+                var reminder = Reminder(
+                    null,
+                    title = title.text.toString(),
+                    message = description.text.toString(),
+                    locationx = location.text.toString(),
+                    locationy = location.text.toString(),
+                    remindertime = timeText.text.toString(),
+                    reminderdate = dateText.text.toString(),
+                    image = imagestr,
+                )
+
+                AsyncTask.execute {
+                    //save payment to room datbase
+                    val db = Room.databaseBuilder(
+                        applicationContext,
+                        AppDatabase::class.java,
+                        getString(R.string.dbFileName)
+                    ).build()
+                    val uuid = db.paymentDao().insert(reminder).toInt()
+                    db.close()
+
+                }
             }
 
             finish()

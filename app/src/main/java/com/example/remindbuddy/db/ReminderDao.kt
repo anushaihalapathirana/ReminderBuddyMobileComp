@@ -1,8 +1,5 @@
 package com.example.remindbuddy.db
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Transaction
+import androidx.room.*
 
 @Dao
 interface ReminderDao {
@@ -16,5 +13,7 @@ interface ReminderDao {
     @Query("SELECT * FROM reminder")
     fun getPaymentInfos(): List<Reminder>
 
+    @Query("UPDATE reminder SET title = :title, message = :message, locationx=:locationx, locationy=:locationy, remindertime=:remindertime, reminderdate=:reminderdate, image=:image WHERE uid=:uid")
+    fun update(uid: Int, title: String, message: String, locationx: String, locationy: String, remindertime:String, reminderdate:String, image:String)
 }
 
