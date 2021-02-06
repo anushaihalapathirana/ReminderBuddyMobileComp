@@ -17,4 +17,6 @@
     <string name="menu_gallery">Profile</string>
     <string name="menu_slideshow">Planned</string>
     <string name="logout">Logout</string>
+
+    <string name="dbFileName">com.mobicomp2021.reminderbuddy</string>
 </resources>
