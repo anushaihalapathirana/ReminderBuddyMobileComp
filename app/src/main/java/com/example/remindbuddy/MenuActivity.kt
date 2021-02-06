@@ -96,7 +96,7 @@ class MenuActivity : AppCompatActivity() {
             getString(R.string.sharedPreference),
             Context.MODE_PRIVATE
         ).edit().putInt("LoginStatus", 0).apply()
-        startActivity(Intent(applicationContext, MainActivity::class.java))
+        startActivity(Intent(applicationContext, LoginActivity::class.java))
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

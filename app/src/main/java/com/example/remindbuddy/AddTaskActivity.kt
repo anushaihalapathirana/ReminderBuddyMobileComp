@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -22,6 +23,7 @@ class AddTaskActivity : AppCompatActivity() {
     val MONTHS = listOf<String>("Jan", "Feb", "March", "Apr", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec")
     lateinit var imageView: ImageView
     lateinit var addImage: TextView
+    lateinit var deleteimagebtn: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +34,8 @@ class AddTaskActivity : AppCompatActivity() {
         val cancelbtn = findViewById<Button>(R.id.addtaskbtn2)
         imageView = findViewById(R.id.imageView)
         addImage = findViewById(R.id.addimagetxt)
+        deleteimagebtn = findViewById(R.id.deletebtn)
+        deleteimagebtn.visibility = View.GONE
 
         val c = Calendar.getInstance()
         val year = c.get(Calendar.YEAR)
@@ -59,10 +63,16 @@ class AddTaskActivity : AppCompatActivity() {
         addImage.setOnClickListener {
             val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
             startActivityForResult(gallery, pickImage)
+
         }
 
         cancelbtn.setOnClickListener {
             startActivity(Intent(applicationContext, MenuActivity::class.java))
+        }
+
+        deleteimagebtn.setOnClickListener {
+            imageView.setImageURI(null)
+            deleteimagebtn.visibility = View.GONE
         }
     }
 
@@ -71,6 +81,7 @@ class AddTaskActivity : AppCompatActivity() {
         if (resultCode == RESULT_OK && requestCode == pickImage) {
             imageUri = data?.data
             imageView.setImageURI(imageUri)
+            deleteimagebtn.visibility = View.VISIBLE
         }
     }
 }

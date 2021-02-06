@@ -10,9 +10,9 @@
         android:id="@+id/editTextTextPersonName5"
         android:layout_width="307dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="36dp"
         android:ems="10"
-        android:hint="Title"
+        android:hint="Task"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -34,10 +34,10 @@
         android:id="@+id/editTextTextMultiLine"
         android:layout_width="307dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="40dp"
         android:ems="10"
         android:gravity="start|top"
-        android:hint="Description"
+        android:hint="Optional"
         android:inputType="textMultiLine"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -47,11 +47,11 @@
         android:id="@+id/editTextDate"
         android:layout_width="307dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:ems="10"
-        android:hint="Date"
+        android:layout_marginTop="40dp"
         android:clickable="true"
         android:editable="false"
+        android:ems="10"
+        android:hint="Optional"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextTextMultiLine" />
@@ -60,10 +60,10 @@
         android:id="@+id/editTextTime"
         android:layout_width="307dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="40dp"
         android:editable="false"
         android:ems="10"
-        android:hint="Time"
+        android:hint="Optional"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextDate" />
@@ -72,9 +72,9 @@
         android:id="@+id/editTextTextPersonName6"
         android:layout_width="307dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="40dp"
         android:ems="10"
-        android:hint="Location"
+        android:hint="Optional"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -85,7 +85,7 @@
         android:layout_width="307dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="Add Image"
+        android:text="Add Image (Optional)"
         android:textColor="#1F2E7E"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -97,7 +97,7 @@
         style="@style/AppTheme.RoundedCornerButton"
         android:layout_width="147dp"
         android:layout_height="38dp"
-        android:layout_marginBottom="96dp"
+        android:layout_marginBottom="60dp"
         android:text="Add"
         android:textColor="@color/btnTxtColor"
         android:textSize="18sp"
@@ -112,7 +112,7 @@
         style="@style/AppTheme.RoundedCornerButton"
         android:layout_width="147dp"
         android:layout_height="38dp"
-        android:layout_marginBottom="96dp"
+        android:layout_marginBottom="60dp"
         android:text="Cancel"
         android:textColor="@color/btnTxtColor"
         android:textSize="18sp"
@@ -124,13 +124,77 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="307dp"
-        android:layout_height="200dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="77dp"
+        android:layout_height="73dp"
+        android:layout_marginTop="4dp"
         android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.155"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/addimagetxt"
         tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/textView16"
+        android:layout_width="307dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView15" />
+
+    <TextView
+        android:id="@+id/textView17"
+        android:layout_width="307dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Description "
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName5" />
+
+    <TextView
+        android:id="@+id/textView18"
+        android:layout_width="307dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Date"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextMultiLine" />
+
+    <TextView
+        android:id="@+id/textView19"
+        android:layout_width="307dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Time"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextDate" />
+
+    <TextView
+        android:id="@+id/textView20"
+        android:layout_width="307dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Location"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTime" />
+
+    <Button
+        android:id="@+id/deletebtn"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="244dp"
+        android:layout_marginRight="244dp"
+        android:background="@drawable/delete"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/addimagetxt" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

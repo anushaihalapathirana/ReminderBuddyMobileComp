@@ -51,18 +51,20 @@ class HomeFragment : Fragment() {
 
 
 
-        val desc = arrayListOf<String>("Shopping with Anna and shan", "call around 9.30pm",
-        "machine vision first assignment. followup with group members",
-        "need new ideas for mobile application",
-        "tute should be completed before noon",
-        "lab 1",
-        "start on 10.00am",
-        "css guidlines check",
-        "arround 7.30 at pastamania",
-        "booking.com and agoda",
-        "green and blue icons",
-        "continue with tutorial 5",
-        "Watch end game")
+        val desc = arrayListOf<String>("Wed, Feb 22, 10:00 AM",
+        "Mon, Feb 25, 08:00 AM",
+        "Wed, Feb 26, 01:00 PM",
+        "Sat, Feb 27, 10:00 AM",
+        "Sun, Feb 28, 08:00 AM",
+        "Mon, March 1, 07:00 AM",
+        "Wed, March 3, 10:00 AM",
+        "Thu, March 20, 10:00 AM",
+        "Fri, March 22, 09:00 AM",
+        "Wed, March 25, 10:00 AM",
+        "Mon, March 28, 11:00 AM",
+        "Sun, March 30, 02:00 PM",
+        "Mon, March 31, 05:00 PM")
+
         val myListAdapter = ReminderAdapter(context as Activity,language,imageId, desc)
         listView.adapter = myListAdapter
 

@@ -50,8 +50,8 @@ class GalleryFragment : Fragment() {
         )
         val savedname = prefs!!.getString("name", "John Doe")
         val savedemail =prefs!!.getString("email","janedoe@gmail.com")
-        val savedusername = prefs!!.getString("username","johndoe")
-        val savedpassword = prefs!!.getString("password","123456")
+        val savedusername = prefs!!.getString("username","janedoe")
+        val savedpassword = prefs!!.getString("password","MobileComp")
         val photobase = prefs!!.getString("photo", "")
         val savedpin = prefs!!.getString("pin", "1111")
 

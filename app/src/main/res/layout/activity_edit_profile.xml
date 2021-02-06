@@ -125,7 +125,7 @@
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.347"
+            app:layout_constraintHorizontal_bias="0.48"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -189,7 +189,7 @@
             android:text="1111"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.486"
+            app:layout_constraintHorizontal_bias="0.485"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -204,6 +204,42 @@
             app:layout_constraintHorizontal_bias="0.549"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/conpasstxt" />
+
+        <TextView
+            android:id="@+id/errmsg3"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:textColor="@color/errorText"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.549"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/usernametxtg" />
+
+        <TextView
+            android:id="@+id/errmsg4"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:textColor="@color/errorText"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.549"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/emailtxtg" />
+
+        <TextView
+            android:id="@+id/errmsg5"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:textColor="@color/errorText"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.549"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profnametxtg" />
 
         <TextView
             android:id="@+id/errpin"

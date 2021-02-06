@@ -82,6 +82,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/loginbtninactivity2"
+        style="@style/AppTheme.RoundedCornerButton"
+        android:layout_width="300dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="12dp"
+        android:text="PIN"
+        android:textColor="@color/btnTxtColor"
+        android:textSize="18sp"
+        app:cornerRadius="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.486"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView10" />
+
     <TextView
         android:id="@+id/errorbanner"
         android:layout_width="wrap_content"
@@ -104,36 +119,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword" />
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="66dp"
-        android:layout_height="66dp"
-        android:layout_marginTop="24dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.289"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView10"
-        tools:srcCompat="@drawable/fb" />
-
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="66dp"
-        android:layout_height="66dp"
-        android:layout_marginTop="24dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.724"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView10"
-        tools:srcCompat="@drawable/google" />
-
     <TextView
         android:id="@+id/textView9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="16dp"
         android:text="Keep me logged in"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.169"
+        app:layout_constraintHorizontal_bias="0.186"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
@@ -141,17 +134,20 @@
         android:id="@+id/textView10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="13dp"
-        android:text="Or login with social account"
+        android:layout_marginTop="36dp"
+        android:text="Or login with the PIN"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/loginbtninactivity" />
 
     <CheckBox
         android:id="@+id/checkBox"
+        style="@style/CustomCheckbox02"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:buttonTint="@color/red"
+        android:checked="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.852"
         app:layout_constraintStart_toStartOf="parent"
@@ -161,12 +157,12 @@
         android:id="@+id/textView11"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         android:text="Don't have an account yet?"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+        app:layout_constraintTop_toBottomOf="@+id/loginbtninactivity2" />
 
     <TextView
         android:id="@+id/registertxt"
