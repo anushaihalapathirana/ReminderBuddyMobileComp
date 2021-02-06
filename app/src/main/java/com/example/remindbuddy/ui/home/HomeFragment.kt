@@ -68,9 +68,8 @@ class HomeFragment : Fragment() {
                                 getString(R.string.dbFileName)
                             )
                             .build()
-                        db.paymentDao().delete(selectedReminder.uid!!)
+                        db.reminderDao().delete(selectedReminder.uid!!)
                     }
-                    //refresh payments list
                     refreshListView()
                 }
                 .setNeutralButton("Cancel") { dialog, _ ->
@@ -102,11 +101,11 @@ class HomeFragment : Fragment() {
     }
 
     private fun refreshListView() {
-        var refreshTask = LoadPaymentInfoEntries()
+        var refreshTask = LoadReminderInfoEntries()
         refreshTask.execute()
     }
 
-    inner class LoadPaymentInfoEntries : AsyncTask<String?, String?, List<Reminder>>() {
+    inner class LoadReminderInfoEntries : AsyncTask<String?, String?, List<Reminder>>() {
         override fun doInBackground(vararg params: String?): List<Reminder> {
             val db = Room.databaseBuilder(
                 context as Activity,
@@ -114,16 +113,16 @@ class HomeFragment : Fragment() {
                 getString(R.string.dbFileName)
             )
                 .build()
-            val paymentInfos = db.paymentDao().getPaymentInfos()
+            val reminderInfos = db.reminderDao().getReminderInfo()
             db.close()
-            return paymentInfos
+            return reminderInfos
         }
 
-        override fun onPostExecute(paymentInfos: List<Reminder>?) {
-            super.onPostExecute(paymentInfos)
-            if (paymentInfos != null) {
-                if (paymentInfos.isNotEmpty()) {
-                    val adaptor = ReminderAdapter(context as Activity, paymentInfos)
+        override fun onPostExecute(reminderInfos: List<Reminder>?) {
+            super.onPostExecute(reminderInfos)
+            if (reminderInfos != null) {
+                if (reminderInfos.isNotEmpty()) {
+                    val adaptor = ReminderAdapter(context as Activity, reminderInfos)
                     listView.adapter = adaptor
                 } else {
                     listView.adapter = null

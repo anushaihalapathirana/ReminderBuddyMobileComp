@@ -5,5 +5,5 @@ import androidx.room.RoomDatabase
 
 @Database(entities = arrayOf(Reminder::class), version = 1)
 abstract class AppDatabase : RoomDatabase() {
-    abstract fun paymentDao(): ReminderDao
+    abstract fun reminderDao(): ReminderDao
 }

@@ -11,9 +11,9 @@ interface ReminderDao {
     fun delete(id: Int)
 
     @Query("SELECT * FROM reminder")
-    fun getPaymentInfos(): List<Reminder>
+    fun getReminderInfo(): List<Reminder>
 
-    @Query("UPDATE reminder SET title = :title, message = :message, locationx=:locationx, locationy=:locationy, remindertime=:remindertime, reminderdate=:reminderdate, image=:image WHERE uid=:uid")
-    fun update(uid: Int, title: String, message: String, locationx: String, locationy: String, remindertime:String, reminderdate:String, image:String)
+    @Query("UPDATE reminder SET title = :title, message = :message, locationx=:locationx, locationy=:locationy, remindertime=:remindertime, reminderdate=:reminderdate, image=:image, createrid=:createrid WHERE uid=:uid")
+    fun update(uid: Int, title: String, message: String, locationx: String, locationy: String, remindertime:String, reminderdate:String, image:String, createrid: String)
 }
 

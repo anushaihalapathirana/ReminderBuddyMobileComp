@@ -148,7 +148,7 @@ class AddTaskActivity : AppCompatActivity() {
                         AppDatabase::class.java,
                         getString(R.string.dbFileName)
                     ).build()
-                    db.paymentDao().update(
+                    db.reminderDao().update(
                         uid,
                         title.text.toString(),
                         description.text.toString(),
@@ -156,7 +156,8 @@ class AddTaskActivity : AppCompatActivity() {
                         location.text.toString(),
                         timeText.text.toString(),
                         dateText.text.toString(),
-                        img.toString()
+                        img.toString(),
+                    "1"
                     )
                     db.close()
 
@@ -171,16 +172,17 @@ class AddTaskActivity : AppCompatActivity() {
                     remindertime = timeText.text.toString(),
                     reminderdate = dateText.text.toString(),
                     image = imagestr,
+                    createrid = "1"
                 )
 
                 AsyncTask.execute {
-                    //save payment to room datbase
+                    //save reminder to room datbase
                     val db = Room.databaseBuilder(
                         applicationContext,
                         AppDatabase::class.java,
                         getString(R.string.dbFileName)
                     ).build()
-                    val uuid = db.paymentDao().insert(reminder).toInt()
+                    val uuid = db.reminderDao().insert(reminder).toInt()
                     db.close()
 
                 }
