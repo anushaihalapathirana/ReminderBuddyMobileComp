@@ -10,6 +10,8 @@ import android.net.Uri
 import android.os.AsyncTask
 import android.os.Bundle
 import android.provider.MediaStore
+import android.speech.RecognizerIntent
+import android.speech.SpeechRecognizer
 import android.util.Base64
 import android.util.Log
 import android.view.View
@@ -28,6 +30,8 @@ class AddTaskActivity : AppCompatActivity() {
     private var imageUri: Uri? = null
     private var isUpdate = false
     private var uid = 0
+    private val RQ_SPEECH_REC = 102
+    private val RQ_SPEECH_DEC = 103
     private var savedimg = ""
     private var savedicon = ""
     private var selectedIcon = ""
@@ -47,6 +51,8 @@ class AddTaskActivity : AppCompatActivity() {
     )
     lateinit var imageView: ImageView
     lateinit var addImage: TextView
+    lateinit var title : EditText
+    lateinit var description: EditText
     lateinit var deleteimagebtn: Button
     private var imagestr = ""
     lateinit var iconimg: ImageView
@@ -55,8 +61,8 @@ class AddTaskActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_task)
 
-        val title = findViewById<EditText>(R.id.editTextTextPersonName5)
-        var description = findViewById<EditText>(R.id.editTextTextMultiLine)
+        title = findViewById(R.id.editTextTextPersonName5)
+        description = findViewById<EditText>(R.id.editTextTextMultiLine)
         val location = findViewById<EditText>(R.id.editTextTextPersonName6)
 
         val dateText = findViewById<EditText>(R.id.editTextDate)
@@ -69,6 +75,17 @@ class AddTaskActivity : AppCompatActivity() {
         deleteimagebtn = findViewById(R.id.deletebtn)
         deleteimagebtn.visibility = View.GONE
         iconimg = findViewById(R.id.imageView2)
+
+        //speech recog
+        val speechbutton = findViewById<Button>(R.id.speechbtn)
+        speechbutton.setOnClickListener {
+            askSpeechInput()
+        }
+
+        val speechdesc = findViewById<Button>(R.id.speechdesc)
+        speechdesc.setOnClickListener {
+            askSpeechInputForDescription()
+        }
 
         val extras = intent.extras
         if (extras != null) {
@@ -227,6 +244,32 @@ class AddTaskActivity : AppCompatActivity() {
 
     }
 
+    private fun askSpeechInputForDescription() {
+        if(!SpeechRecognizer.isRecognitionAvailable(this)) {
+            Toast.makeText(this, "Speech Recognition is not available", Toast.LENGTH_SHORT).show()
+        } else {
+            val i = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+            i.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+            i.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
+            i.putExtra(RecognizerIntent.EXTRA_PROMPT, "Add task description")
+            startActivityForResult(i, RQ_SPEECH_DEC)
+        }
+    }
+
+    private fun askSpeechInput() {
+        if(!SpeechRecognizer.isRecognitionAvailable(this)) {
+            Toast.makeText(this, "Speech Recognition is not available", Toast.LENGTH_SHORT).show()
+        } else {
+            val i = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+            i.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+            i.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
+            i.putExtra(RecognizerIntent.EXTRA_PROMPT, "Add Task")
+            startActivityForResult(i, RQ_SPEECH_REC)
+        }
+    }
+
+
+
     private fun popupMenu() {
         iconimg = findViewById(R.id.imageView2)
         val textfield = findViewById<TextView>(R.id.textView21)
@@ -316,13 +359,22 @@ class AddTaskActivity : AppCompatActivity() {
             imageView.setImageURI(imageUri)
             deleteimagebtn.visibility = View.VISIBLE
         }
-
         if (resultCode === RESULT_OK) {
             when (requestCode) {
                 pickImage -> manageImageFromUri(data?.data)
             }
         } else {
             Log.d("Image Save", "Failed to save the image")
+        }
+
+        if(requestCode == RQ_SPEECH_REC && resultCode == RESULT_OK ) {
+            val result = data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
+            title.setText(result?.get(0).toString())
+        }
+
+        if(requestCode == RQ_SPEECH_DEC && resultCode == RESULT_OK ) {
+            val result = data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
+            description.setText(result?.get(0).toString())
         }
     }
 }
