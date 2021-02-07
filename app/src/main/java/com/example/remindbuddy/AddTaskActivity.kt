@@ -229,6 +229,7 @@ class AddTaskActivity : AppCompatActivity() {
 
     private fun popupMenu() {
         iconimg = findViewById(R.id.imageView2)
+        val textfield = findViewById<TextView>(R.id.textView21)
         val popupmenu = PopupMenu(applicationContext, iconimg)
         popupmenu.inflate(R.menu.icon_pop_up_menu)
         popupmenu.setOnMenuItemClickListener {
@@ -267,7 +268,7 @@ class AddTaskActivity : AppCompatActivity() {
             }
         }
 
-        iconimg.setOnLongClickListener {
+        textfield.setOnClickListener {
             try {
                 val popup = PopupMenu::class.java.getDeclaredField("mPopup")
                 popup.isAccessible = true
