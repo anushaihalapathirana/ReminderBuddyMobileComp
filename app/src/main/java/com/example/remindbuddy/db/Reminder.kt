@@ -15,6 +15,7 @@ data class Reminder(
     @ColumnInfo(name = "reminderdate") var reminderdate: String,
     @ColumnInfo(name = "image") var image: String,
     @ColumnInfo(name = "createrid") var createrid: String,
+    @ColumnInfo(name = "icon") var icon: String
 
     )
 

@@ -29,6 +29,8 @@ class AddTaskActivity : AppCompatActivity() {
     private var isUpdate = false
     private var uid = 0
     private var savedimg = ""
+    private var savedicon = ""
+    private var selectedIcon = ""
     val MONTHS = listOf<String>(
         "Jan",
         "Feb",
@@ -46,7 +48,8 @@ class AddTaskActivity : AppCompatActivity() {
     lateinit var imageView: ImageView
     lateinit var addImage: TextView
     lateinit var deleteimagebtn: Button
-    lateinit var imagestr: String
+    private var imagestr = ""
+    lateinit var iconimg: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,6 +68,7 @@ class AddTaskActivity : AppCompatActivity() {
         addImage = findViewById(R.id.addimagetxt)
         deleteimagebtn = findViewById(R.id.deletebtn)
         deleteimagebtn.visibility = View.GONE
+        iconimg = findViewById(R.id.imageView2)
 
         val extras = intent.extras
         if (extras != null) {
@@ -78,6 +82,26 @@ class AddTaskActivity : AppCompatActivity() {
             addReminder.setText("update")
 
             savedimg = extras.getString("image").toString()
+            savedicon = extras.getString("icon").toString()
+
+            if(savedicon != "") {
+                if(savedicon == "star") {
+                    iconimg.setImageResource(R.drawable.ic_baseline_star_rate_24)
+                    selectedIcon = "star"
+                } else if(savedicon == "calender") {
+                    iconimg.setImageResource(R.drawable.ic_baseline_perm_contact_calendar_24)
+                } else if(savedicon == "camera") {
+                    iconimg.setImageResource(R.drawable.ic_menu_camera)
+                } else if(savedicon == "book") {
+                    iconimg.setImageResource(R.drawable.ic_baseline_book_24)
+                } else if(savedicon == "car") {
+                    iconimg.setImageResource(R.drawable.ic_baseline_electric_car_24)
+                } else if(savedicon== "movie") {
+                    iconimg.setImageResource(R.drawable.ic_baseline_movie_24)
+                } else {
+
+                }
+            }
             if(savedimg == "") {
 //            imageView.setImageResource(R.drawable.profile)
             } else {
@@ -87,6 +111,8 @@ class AddTaskActivity : AppCompatActivity() {
                 imageView.setImageBitmap(decodedImage)
             }
         }
+
+        popupMenu()
 
         val c = Calendar.getInstance()
         val year = c.get(Calendar.YEAR)
@@ -139,9 +165,12 @@ class AddTaskActivity : AppCompatActivity() {
 
         addReminder.setOnClickListener {
             if(isUpdate) {
+                var img = ""
+                if(imageView.drawable != null) {
+                    val bitmap = (imageView.getDrawable() as BitmapDrawable).bitmap
+                    img = encodeImage(bitmap).toString()
+                }
 
-                val bitmap = (imageView.getDrawable() as BitmapDrawable).bitmap
-                val img = encodeImage(bitmap)
                 AsyncTask.execute {
                     val db = Room.databaseBuilder(
                         applicationContext,
@@ -156,8 +185,9 @@ class AddTaskActivity : AppCompatActivity() {
                         location.text.toString(),
                         timeText.text.toString(),
                         dateText.text.toString(),
-                        img.toString(),
-                    "1"
+                        img,
+                    "1",
+                            selectedIcon
                     )
                     db.close()
 
@@ -172,7 +202,9 @@ class AddTaskActivity : AppCompatActivity() {
                     remindertime = timeText.text.toString(),
                     reminderdate = dateText.text.toString(),
                     image = imagestr,
-                    createrid = "1"
+                    createrid = "1",
+                    icon = selectedIcon
+
                 )
 
                 AsyncTask.execute {
@@ -193,6 +225,62 @@ class AddTaskActivity : AppCompatActivity() {
         }
 
 
+    }
+
+    private fun popupMenu() {
+        iconimg = findViewById(R.id.imageView2)
+        val popupmenu = PopupMenu(applicationContext, iconimg)
+        popupmenu.inflate(R.menu.icon_pop_up_menu)
+        popupmenu.setOnMenuItemClickListener {
+            when(it.itemId) {
+                R.id.star_icon -> {
+                    iconimg.setImageResource(R.drawable.ic_baseline_star_rate_24)
+                    selectedIcon = "star"
+                    true
+                }
+                R.id.calender_icon -> {
+                    iconimg.setImageResource(R.drawable.ic_baseline_perm_contact_calendar_24)
+                    selectedIcon = "calender"
+                    true
+                }
+                R.id.camera_icon -> {
+                    iconimg.setImageResource(R.drawable.ic_menu_camera)
+                    selectedIcon = "camera"
+                    true
+                }
+                R.id.book_icon -> {
+                    iconimg.setImageResource(R.drawable.ic_baseline_book_24)
+                    selectedIcon = "book"
+                    true
+                }
+                R.id.car_icon -> {
+                    iconimg.setImageResource(R.drawable.ic_baseline_electric_car_24)
+                    selectedIcon = "car"
+                    true
+                }
+                R.id.movie_icon -> {
+                    iconimg.setImageResource(R.drawable.ic_baseline_movie_24)
+                    selectedIcon = "movie"
+                    true
+                }
+                else -> true
+            }
+        }
+
+        iconimg.setOnLongClickListener {
+            try {
+                val popup = PopupMenu::class.java.getDeclaredField("mPopup")
+                popup.isAccessible = true
+                val menu = popup.get(popupmenu)
+                menu.javaClass.getDeclaredMethod("setForceShowIcon", Boolean::class.java).invoke(menu, true)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            } finally {
+                popupmenu.show()
+            }
+             true
+
+        }
     }
 
     private fun manageImageFromUri(imageUri: Uri?) {

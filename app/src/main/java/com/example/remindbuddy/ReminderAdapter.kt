@@ -26,11 +26,29 @@ class ReminderAdapter(context: Context, private val list: List<Reminder>) : Base
 
         val titleText = rowView.findViewById(R.id.remindertitle) as TextView
         val imageView = rowView.findViewById(R.id.reminderimg) as ImageView
-        val radiobtn = rowView.findViewById(R.id.radioButton) as CheckBox
+        val iconimage = rowView.findViewById(R.id.iconimage) as ImageView
         val desctxt = rowView.findViewById(R.id.descriptiontxt) as TextView
 
         titleText.text = list[position].title
         desctxt.text = list[position].reminderdate
+
+        if(list[position].icon != "") {
+            if(list[position].icon == "star") {
+                iconimage.setImageResource(R.drawable.ic_baseline_star_rate_24)
+            } else if(list[position].icon == "calender") {
+                iconimage.setImageResource(R.drawable.ic_baseline_perm_contact_calendar_24)
+            } else if(list[position].icon == "camera") {
+                iconimage.setImageResource(R.drawable.ic_menu_camera)
+            } else if(list[position].icon == "book") {
+                iconimage.setImageResource(R.drawable.ic_baseline_book_24)
+            } else if(list[position].icon == "car") {
+                iconimage.setImageResource(R.drawable.ic_baseline_electric_car_24)
+            } else if(list[position].icon == "movie") {
+                iconimage.setImageResource(R.drawable.ic_baseline_movie_24)
+            } else {
+
+            }
+        }
 
         if(list[position].image == "") {
 //            imageView.setImageResource(R.drawable.profile)

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+        <item
+            android:id="@+id/star_icon"
+            android:icon="@drawable/ic_baseline_star_rate_24"
+            android:title="Favourite" />
+        <item
+            android:id="@+id/calender_icon"
+            android:icon="@drawable/ic_baseline_perm_contact_calendar_24"
+            android:title="Calender" />
+        <item
+            android:id="@+id/camera_icon"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="Camera" />
+        <item
+            android:id="@+id/car_icon"
+            android:icon="@drawable/ic_baseline_electric_car_24"
+            android:title="Travel" />
+        <item
+            android:id="@+id/book_icon"
+            android:icon="@drawable/ic_baseline_book_24"
+            android:title="Book" />
+        <item
+            android:id="@+id/movie_icon"
+            android:icon="@drawable/ic_baseline_movie_24"
+            android:title="Movie" />
+
+</menu>

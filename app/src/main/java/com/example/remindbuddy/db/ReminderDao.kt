@@ -13,7 +13,7 @@ interface ReminderDao {
     @Query("SELECT * FROM reminder")
     fun getReminderInfo(): List<Reminder>
 
-    @Query("UPDATE reminder SET title = :title, message = :message, locationx=:locationx, locationy=:locationy, remindertime=:remindertime, reminderdate=:reminderdate, image=:image, createrid=:createrid WHERE uid=:uid")
-    fun update(uid: Int, title: String, message: String, locationx: String, locationy: String, remindertime:String, reminderdate:String, image:String, createrid: String)
+    @Query("UPDATE reminder SET title = :title, message = :message, locationx=:locationx, locationy=:locationy, remindertime=:remindertime, reminderdate=:reminderdate, image=:image, createrid=:createrid, icon=:icon WHERE uid=:uid")
+    fun update(uid: Int, title: String, message: String, locationx: String, locationy: String, remindertime:String, reminderdate:String, image:String, createrid: String, icon: String)
 }
 

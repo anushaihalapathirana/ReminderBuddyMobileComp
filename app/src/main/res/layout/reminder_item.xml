@@ -33,23 +33,22 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/radioButton"
+        app:layout_constraintStart_toEndOf="@+id/iconimage"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <CheckBox
-        android:id="@+id/radioButton"
-        style="@style/CustomCheckbox02"
-        android:layout_width="35dp"
-        android:layout_height="25sp"
-        android:layout_marginTop="20dp"
+    <ImageView
+        android:id="@+id/iconimage"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="12dp"
         android:buttonTint="@color/red"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
         android:paddingRight="20dp"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.041"
+        app:layout_constraintHorizontal_bias="0.04"
         app:layout_constraintStart_toStartOf="parent"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -61,7 +60,7 @@
         android:text="TextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/radioButton"
+        app:layout_constraintStart_toEndOf="@+id/iconimage"
         android:singleLine="true"
         app:layout_constraintTop_toTopOf="parent" />
 
