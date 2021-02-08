@@ -1,8 +1,10 @@
 package com.example.remindbuddy.ui.home
 
-import android.app.Activity
+import android.app.*
+import android.content.Context
 import android.content.Intent
 import android.os.AsyncTask
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,15 +13,19 @@ import android.widget.AdapterView
 import android.widget.ListView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.app.NotificationCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.room.Room
 import com.example.remindbuddy.AddTaskActivity
 import com.example.remindbuddy.R
 import com.example.remindbuddy.ReminderAdapter
+import com.example.remindbuddy.ReminderReceiver
 import com.example.remindbuddy.db.AppDatabase
 import com.example.remindbuddy.db.Reminder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
+import kotlin.random.Random
 
 class HomeFragment : Fragment() {
 
@@ -51,11 +57,11 @@ class HomeFragment : Fragment() {
             //retrieve selected Item
             val selectedReminder = listView.adapter.getItem(position) as Reminder
             val message =
-                "Do you want to delete ?"
+                "Do you want to edit ?"
 
             // Show AlertDialog to delete the reminder
             val builder = AlertDialog.Builder(context as Activity)
-            builder.setTitle("Delete reminder?")
+            builder.setTitle("Edit reminder?")
                 .setMessage(message)
                 .setPositiveButton("Delete") { _, _ ->
 
@@ -70,6 +76,7 @@ class HomeFragment : Fragment() {
                             .build()
                         db.reminderDao().delete(selectedReminder.uid!!)
                     }
+                    cancelReminder(context as Activity, selectedReminder.uid!!)
                     refreshListView()
                 }
                 .setNeutralButton("Cancel") { dialog, _ ->
@@ -127,12 +134,77 @@ class HomeFragment : Fragment() {
                     listView.adapter = adaptor
                 } else {
                     listView.adapter = null
-                    Toast.makeText(context as Activity, "No tasks available", Toast.LENGTH_SHORT).show()
+                    view?.let { Snackbar.make(it, "No tasks available", Snackbar.LENGTH_LONG).setAction("Action", null).show() }
+//                    Toast.makeText(context as Activity, "No tasks available", Toast.LENGTH_SHORT).show()
                 }
             }
         }
 
     }
 
+    companion object {
+
+        fun showNofitication(context: Context, message: String) {
+
+            val CHANNEL_ID = "REMINDER_APP_NOTIFICATION_CHANNEL"
+            var notificationId = Random.nextInt(10, 1000) + 5
+
+            var notificationBuilder = NotificationCompat.Builder(context, CHANNEL_ID)
+                    .setSmallIcon(R.drawable.ic_baseline_movie_24)
+                    .setContentTitle(context.getString(R.string.app_name))
+                    .setContentText(message)
+                    .setStyle(NotificationCompat.BigTextStyle().bigText(message))
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                    .setGroup(CHANNEL_ID)
+
+            val notificationManager =
+                    context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+            // Notification chancel needed since Android 8
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                val channel = NotificationChannel(
+                        CHANNEL_ID,
+                        context.getString(R.string.app_name),
+                        NotificationManager.IMPORTANCE_DEFAULT
+                ).apply {
+                    description = context.getString(R.string.app_name)
+                }
+                notificationManager.createNotificationChannel(channel)
+            }
+
+            notificationManager.notify(notificationId, notificationBuilder.build())
+
+        }
+
+        fun setRemnder(context: Context, uid: Int, timeInMillis: Long, message: String) {
+            val intent = Intent(context, ReminderReceiver::class.java)
+            intent.putExtra("uid", uid)
+            intent.putExtra("message", message)
+
+            // create a pending intent to a  future action with a uniquie request code i.e uid
+            val pendingIntent =
+                    PendingIntent.getBroadcast(context, uid, intent, PendingIntent.FLAG_ONE_SHOT)
+
+            //create a service to moniter and execute the fure action.
+            val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+                alarmManager.setExact(AlarmManager.RTC, timeInMillis, pendingIntent)
+            }
+        }
+
+        fun cancelReminder(context: Context, pendingIntentId: Int) {
+
+            val intent = Intent(context, ReminderReceiver::class.java)
+            val pendingIntent =
+                    PendingIntent.getBroadcast(
+                            context,
+                            pendingIntentId,
+                            intent,
+                            PendingIntent.FLAG_ONE_SHOT
+                    )
+            val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            alarmManager.cancel(pendingIntent)
+        }
+    }
 
 }

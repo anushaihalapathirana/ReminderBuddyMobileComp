@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.room.Room
 import com.example.remindbuddy.db.AppDatabase
 import com.example.remindbuddy.db.Reminder
+import com.example.remindbuddy.ui.home.HomeFragment
 import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
 import java.util.*
@@ -35,6 +36,9 @@ class AddTaskActivity : AppCompatActivity() {
     private var savedimg = ""
     private var savedicon = ""
     private var selectedIcon = ""
+    private var calyear = 0
+    private var calmonth = 0
+    private var calday = 0
     val MONTHS = listOf<String>(
         "Jan",
         "Feb",
@@ -107,14 +111,19 @@ class AddTaskActivity : AppCompatActivity() {
                     selectedIcon = "star"
                 } else if(savedicon == "calender") {
                     iconimg.setImageResource(R.drawable.ic_baseline_perm_contact_calendar_24)
+                    selectedIcon = "calender"
                 } else if(savedicon == "camera") {
                     iconimg.setImageResource(R.drawable.ic_menu_camera)
+                    selectedIcon = "camera"
                 } else if(savedicon == "book") {
                     iconimg.setImageResource(R.drawable.ic_baseline_book_24)
+                    selectedIcon = "book"
                 } else if(savedicon == "car") {
                     iconimg.setImageResource(R.drawable.ic_baseline_electric_car_24)
+                    selectedIcon = "car"
                 } else if(savedicon== "movie") {
                     iconimg.setImageResource(R.drawable.ic_baseline_movie_24)
+                    selectedIcon = "movie"
                 } else {
 
                 }
@@ -142,6 +151,9 @@ class AddTaskActivity : AppCompatActivity() {
                 R.style.DialogTheme,
                 DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                     dateText.setText("" + dayOfMonth + " " + MONTHS[monthOfYear] + " " + year)
+                    calyear = year
+                    calmonth = monthOfYear
+                    calday = dayOfMonth
                 },
                 year,
                 month,
@@ -224,6 +236,8 @@ class AddTaskActivity : AppCompatActivity() {
 
                 )
 
+                val reminderCalender = GregorianCalendar(calyear,calmonth,calday)
+
                 AsyncTask.execute {
                     //save reminder to room datbase
                     val db = Room.databaseBuilder(
@@ -234,14 +248,30 @@ class AddTaskActivity : AppCompatActivity() {
                     val uuid = db.reminderDao().insert(reminder).toInt()
                     db.close()
 
+                    // set reminder
+                    if (reminderCalender.timeInMillis > Calendar.getInstance().timeInMillis) {
+                        // set reminder
+                        val message =
+                                " ${reminder.title}  "
+                        HomeFragment.setRemnder(
+                                applicationContext,
+                                uuid,
+                                reminderCalender.timeInMillis,
+                                message
+                        )
+                    }
+
                 }
+                if(reminderCalender.timeInMillis>Calendar.getInstance().timeInMillis){
+                    Toast.makeText(
+                            applicationContext,
+                            "Reminder set",
+                            Toast.LENGTH_SHORT
+                    ).show()
+                }
+                finish()
             }
-
-            finish()
-
         }
-
-
     }
 
     private fun askSpeechInputForDescription() {
@@ -338,8 +368,8 @@ class AddTaskActivity : AppCompatActivity() {
             // Manage exception ...
         }
         if (bitmap != null) {
-            val nh = (bitmap.height * (128.0 / bitmap.width)).toInt()
-            val scaled = Bitmap.createScaledBitmap(bitmap, 128, nh, true)
+            val nh = (bitmap.height * (32.0 / bitmap.width)).toInt()
+            val scaled = Bitmap.createScaledBitmap(bitmap, 32, nh, true)
             basestr = encodeImage(scaled).toString()
             imagestr = basestr
         }
@@ -347,7 +377,7 @@ class AddTaskActivity : AppCompatActivity() {
 
     private fun encodeImage(bm: Bitmap): String? {
         val baos = ByteArrayOutputStream()
-        bm.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        bm.compress(Bitmap.CompressFormat.JPEG, 50, baos)
         val b = baos.toByteArray()
         return Base64.encodeToString(b, Base64.DEFAULT)
     }
