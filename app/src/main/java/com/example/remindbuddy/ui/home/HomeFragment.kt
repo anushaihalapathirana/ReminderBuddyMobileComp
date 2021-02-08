@@ -150,7 +150,7 @@ class HomeFragment : Fragment() {
             var notificationId = Random.nextInt(10, 1000) + 5
 
             var notificationBuilder = NotificationCompat.Builder(context, CHANNEL_ID)
-                    .setSmallIcon(R.drawable.ic_baseline_movie_24)
+                    .setSmallIcon(R.drawable.ic_baseline_alarm_on_24)
                     .setContentTitle(context.getString(R.string.app_name))
                     .setContentText(message)
                     .setStyle(NotificationCompat.BigTextStyle().bigText(message))
