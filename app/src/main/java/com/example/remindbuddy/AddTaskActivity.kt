@@ -23,6 +23,8 @@ import com.example.remindbuddy.db.Reminder
 import com.example.remindbuddy.ui.home.HomeFragment
 import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 
@@ -193,6 +195,9 @@ class AddTaskActivity : AppCompatActivity() {
         }
 
         addReminder.setOnClickListener {
+            val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
+            val currentDate = sdf.format(Date())
+
             if(isUpdate) {
                 var img = ""
                 if(imageView.drawable != null) {
@@ -200,6 +205,7 @@ class AddTaskActivity : AppCompatActivity() {
                     img = encodeImage(bitmap).toString()
                 }
 
+                val reminderCalenderupdate = GregorianCalendar(calyear,calmonth,calday)
                 AsyncTask.execute {
                     val db = Room.databaseBuilder(
                         applicationContext,
@@ -216,10 +222,30 @@ class AddTaskActivity : AppCompatActivity() {
                         dateText.text.toString(),
                         img,
                     "1",
-                            selectedIcon
+                            selectedIcon,
+                            false,
+                            currentDate.toString(),
                     )
                     db.close()
+                    if (reminderCalenderupdate.timeInMillis > Calendar.getInstance().timeInMillis) {
+                        // set reminder
+                        val message =
+                                " ${title.text}  "
+                        HomeFragment.setRemnder(
+                                applicationContext,
+                                uid,
+                                reminderCalenderupdate.timeInMillis,
+                                message
+                        )
+                    }
 
+                }
+                if(reminderCalenderupdate.timeInMillis>Calendar.getInstance().timeInMillis){
+                    Toast.makeText(
+                            applicationContext,
+                            "Reminder updated",
+                            Toast.LENGTH_SHORT
+                    ).show()
                 }
             } else {
                 var reminder = Reminder(
@@ -232,8 +258,9 @@ class AddTaskActivity : AppCompatActivity() {
                     reminderdate = dateText.text.toString(),
                     image = imagestr,
                     createrid = "1",
-                    icon = selectedIcon
-
+                    icon = selectedIcon,
+                    reminderseen = false,
+                    creationtime = timeText.text.toString(),
                 )
 
                 val reminderCalender = GregorianCalendar(calyear,calmonth,calday)
@@ -262,6 +289,7 @@ class AddTaskActivity : AppCompatActivity() {
                     }
 
                 }
+
                 if(reminderCalender.timeInMillis>Calendar.getInstance().timeInMillis){
                     Toast.makeText(
                             applicationContext,
@@ -269,8 +297,9 @@ class AddTaskActivity : AppCompatActivity() {
                             Toast.LENGTH_SHORT
                     ).show()
                 }
-                finish()
+
             }
+            finish()
         }
     }
 
