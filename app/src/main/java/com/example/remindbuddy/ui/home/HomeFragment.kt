@@ -76,7 +76,8 @@ class HomeFragment : Fragment() {
                             .build()
                         db.reminderDao().delete(selectedReminder.uid!!)
                     }
-                    cancelReminder(context as Activity, selectedReminder.uid!!)
+                    // TODO: cancel reminder
+                    //cancelReminder(context as Activity, selectedReminder.uid!!)
                     refreshListView()
                 }
                 .setNeutralButton("Cancel") { dialog, _ ->
@@ -142,69 +143,6 @@ class HomeFragment : Fragment() {
 
     }
 
-    companion object {
 
-        fun showNofitication(context: Context, message: String) {
-
-            val CHANNEL_ID = "REMINDER_APP_NOTIFICATION_CHANNEL"
-            var notificationId = Random.nextInt(10, 1000) + 5
-
-            var notificationBuilder = NotificationCompat.Builder(context, CHANNEL_ID)
-                    .setSmallIcon(R.drawable.ic_baseline_alarm_on_24)
-                    .setContentTitle(context.getString(R.string.app_name))
-                    .setContentText(message)
-                    .setStyle(NotificationCompat.BigTextStyle().bigText(message))
-                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                    .setGroup(CHANNEL_ID)
-
-            val notificationManager =
-                    context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
-            // Notification chancel needed since Android 8
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                val channel = NotificationChannel(
-                        CHANNEL_ID,
-                        context.getString(R.string.app_name),
-                        NotificationManager.IMPORTANCE_DEFAULT
-                ).apply {
-                    description = context.getString(R.string.app_name)
-                }
-                notificationManager.createNotificationChannel(channel)
-            }
-
-            notificationManager.notify(notificationId, notificationBuilder.build())
-
-        }
-
-        fun setRemnder(context: Context, uid: Int, timeInMillis: Long, message: String) {
-            val intent = Intent(context, ReminderReceiver::class.java)
-            intent.putExtra("uid", uid)
-            intent.putExtra("message", message)
-
-            // create a pending intent to a  future action with a uniquie request code i.e uid
-            val pendingIntent =
-                    PendingIntent.getBroadcast(context, uid, intent, PendingIntent.FLAG_ONE_SHOT)
-
-            //create a service to moniter and execute the fure action.
-            val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
-                alarmManager.setExact(AlarmManager.RTC, timeInMillis, pendingIntent)
-            }
-        }
-
-        fun cancelReminder(context: Context, pendingIntentId: Int) {
-
-            val intent = Intent(context, ReminderReceiver::class.java)
-            val pendingIntent =
-                    PendingIntent.getBroadcast(
-                            context,
-                            pendingIntentId,
-                            intent,
-                            PendingIntent.FLAG_ONE_SHOT
-                    )
-            val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-            alarmManager.cancel(pendingIntent)
-        }
-    }
 
 }

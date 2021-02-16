@@ -18,6 +18,7 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.room.Room
+import androidx.work.*
 import com.example.remindbuddy.db.AppDatabase
 import com.example.remindbuddy.db.Reminder
 import com.example.remindbuddy.ui.home.HomeFragment
@@ -26,6 +27,9 @@ import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
+import java.util.concurrent.TimeUnit
+import kotlin.math.min
+import androidx.lifecycle.Observer
 
 
 class AddTaskActivity : AppCompatActivity() {
@@ -41,6 +45,8 @@ class AddTaskActivity : AppCompatActivity() {
     private var calyear = 0
     private var calmonth = 0
     private var calday = 0
+    private var hourOfDay = 0
+    private var minuteOfHour = 0
     val MONTHS = listOf<String>(
         "Jan",
         "Feb",
@@ -62,6 +68,7 @@ class AddTaskActivity : AppCompatActivity() {
     lateinit var deleteimagebtn: Button
     private var imagestr = ""
     lateinit var iconimg: ImageView
+    lateinit var addTaskText: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,6 +88,9 @@ class AddTaskActivity : AppCompatActivity() {
         deleteimagebtn = findViewById(R.id.deletebtn)
         deleteimagebtn.visibility = View.GONE
         iconimg = findViewById(R.id.imageView2)
+
+        addTaskText = findViewById(R.id.textView15)
+
 
         //speech recog
         val speechbutton = findViewById<Button>(R.id.speechbtn)
@@ -103,6 +113,7 @@ class AddTaskActivity : AppCompatActivity() {
             dateText.setText(extras.getString("reminderdate"))
             timeText.setText(extras.getString("remindertime"))
             addReminder.setText("update")
+            addTaskText.setText("Update the Task")
 
             savedimg = extras.getString("image").toString()
             savedicon = extras.getString("icon").toString()
@@ -170,6 +181,8 @@ class AddTaskActivity : AppCompatActivity() {
                 cal.set(Calendar.HOUR_OF_DAY, hour)
                 cal.set(Calendar.MINUTE, minute)
                 timeText.setText(SimpleDateFormat("HH:mm").format(cal.time))
+                hourOfDay = hour
+                minuteOfHour = minute
             }
             TimePickerDialog(
                 this, R.style.DialogTheme, timeSetListener, cal.get(Calendar.HOUR_OF_DAY), cal.get(
@@ -194,6 +207,8 @@ class AddTaskActivity : AppCompatActivity() {
             deleteimagebtn.visibility = View.GONE
         }
 
+        val request = OneTimeWorkRequest.Builder(ReminderWorker::class.java)
+
         addReminder.setOnClickListener {
             val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
             val currentDate = sdf.format(Date())
@@ -205,7 +220,7 @@ class AddTaskActivity : AppCompatActivity() {
                     img = encodeImage(bitmap).toString()
                 }
 
-                val reminderCalenderupdate = GregorianCalendar(calyear,calmonth,calday)
+                val reminderCalenderupdate = GregorianCalendar(calyear, calmonth, calday, hourOfDay, minuteOfHour, 0)
                 AsyncTask.execute {
                     val db = Room.databaseBuilder(
                         applicationContext,
@@ -231,12 +246,14 @@ class AddTaskActivity : AppCompatActivity() {
                         // set reminder
                         val message =
                                 " ${title.text}  "
-                        HomeFragment.setRemnder(
-                                applicationContext,
-                                uid,
-                                reminderCalenderupdate.timeInMillis,
-                                message
-                        )
+                        val timediff = reminderCalenderupdate.timeInMillis - Calendar.getInstance().timeInMillis
+
+                        val data = Data.Builder()
+                        data.putString("message", message)
+                        request.setInputData(data.build())
+                        request.setInitialDelay(timediff, TimeUnit.MILLISECONDS)
+
+                        WorkManager.getInstance(this).enqueue(request.build())
                     }
 
                 }
@@ -263,7 +280,7 @@ class AddTaskActivity : AppCompatActivity() {
                     creationtime = timeText.text.toString(),
                 )
 
-                val reminderCalender = GregorianCalendar(calyear,calmonth,calday)
+                val reminderCalender = GregorianCalendar(calyear,calmonth,calday,hourOfDay, minuteOfHour,0)
 
                 AsyncTask.execute {
                     //save reminder to room datbase
@@ -277,15 +294,19 @@ class AddTaskActivity : AppCompatActivity() {
 
                     // set reminder
                     if (reminderCalender.timeInMillis > Calendar.getInstance().timeInMillis) {
-                        // set reminder
+
                         val message =
                                 " ${reminder.title}  "
-                        HomeFragment.setRemnder(
-                                applicationContext,
-                                uuid,
-                                reminderCalender.timeInMillis,
-                                message
-                        )
+
+                        val timediff = reminderCalender.timeInMillis - Calendar.getInstance().timeInMillis
+
+                        val data = Data.Builder()
+                        data.putString("message", message)
+                        request.setInputData(data.build())
+                        request.setInitialDelay(timediff, TimeUnit.MILLISECONDS)
+
+                        WorkManager.getInstance(this).enqueue(request.build())
+
                     }
 
                 }
@@ -301,6 +322,15 @@ class AddTaskActivity : AppCompatActivity() {
             }
             finish()
         }
+
+        WorkManager.getInstance(this).getWorkInfoByIdLiveData(request.build().id)
+            .observe(this, Observer {
+
+                val status: String = it.state.name
+                Toast.makeText(this,status, Toast.LENGTH_SHORT).show()
+            })
+
+
     }
     
     private fun askSpeechInputForDescription() {
@@ -406,7 +436,7 @@ class AddTaskActivity : AppCompatActivity() {
 
     private fun encodeImage(bm: Bitmap): String? {
         val baos = ByteArrayOutputStream()
-        bm.compress(Bitmap.CompressFormat.JPEG, 50, baos)
+        bm.compress(Bitmap.CompressFormat.JPEG, 100, baos)
         val b = baos.toByteArray()
         return Base64.encodeToString(b, Base64.DEFAULT)
     }
