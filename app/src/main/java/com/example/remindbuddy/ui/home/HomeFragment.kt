@@ -57,11 +57,11 @@ class HomeFragment : Fragment() {
             //retrieve selected Item
             val selectedReminder = listView.adapter.getItem(position) as Reminder
             val message =
-                "Do you want to edit ?"
+                "Do you want to edit or delete this reminder ?"
 
             // Show AlertDialog to delete the reminder
             val builder = AlertDialog.Builder(context as Activity)
-            builder.setTitle("Edit reminder?")
+            builder.setTitle("Edit or Delete reminder?")
                 .setMessage(message)
                 .setPositiveButton("Delete") { _, _ ->
 

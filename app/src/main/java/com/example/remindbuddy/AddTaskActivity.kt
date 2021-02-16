@@ -302,7 +302,7 @@ class AddTaskActivity : AppCompatActivity() {
             finish()
         }
     }
-
+    
     private fun askSpeechInputForDescription() {
         if(!SpeechRecognizer.isRecognitionAvailable(this)) {
             Toast.makeText(this, "Speech Recognition is not available", Toast.LENGTH_SHORT).show()
