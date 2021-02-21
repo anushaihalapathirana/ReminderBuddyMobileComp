@@ -31,6 +31,7 @@ class HomeFragment : Fragment() {
 
     private lateinit var homeViewModel: HomeViewModel
     lateinit var listView: ListView
+    var isShowAll: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,12 +47,16 @@ class HomeFragment : Fragment() {
 
         // floating button click
         val fab: FloatingActionButton = root.findViewById(R.id.editbtn)
+        val showallbtn: FloatingActionButton = root.findViewById(R.id.editbtn3)
+
         fab.setOnClickListener { view ->
-//            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                .setAction("Action", null).show()
             startActivity(Intent(activity, AddTaskActivity::class.java))
         }
 
+        showallbtn.setOnClickListener { view ->
+            isShowAll = true
+            refreshListView()
+        }
 
         listView.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, id ->
             //retrieve selected Item
@@ -131,12 +136,11 @@ class HomeFragment : Fragment() {
             super.onPostExecute(reminderInfos)
             if (reminderInfos != null) {
                 if (reminderInfos.isNotEmpty()) {
-                    val adaptor = ReminderAdapter(context as Activity, reminderInfos)
+                    val adaptor = ReminderAdapter(context as Activity, reminderInfos, isShowAll)
                     listView.adapter = adaptor
                 } else {
                     listView.adapter = null
                     view?.let { Snackbar.make(it, "No tasks available", Snackbar.LENGTH_LONG).setAction("Action", null).show() }
-//                    Toast.makeText(context as Activity, "No tasks available", Toast.LENGTH_SHORT).show()
                 }
             }
         }

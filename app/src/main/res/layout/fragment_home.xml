@@ -36,4 +36,19 @@
         app:maxImageSize="20dp"
         app:srcCompat="@drawable/plus" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/editbtn3"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:background="@color/red"
+        android:src="@drawable/show_foreground"
+        app:backgroundTint="@color/red"
+        app:fabCustomSize="65dp"
+        app:fabSize="auto"
+        app:layout_constraintBottom_toTopOf="@+id/editbtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:maxImageSize="140dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

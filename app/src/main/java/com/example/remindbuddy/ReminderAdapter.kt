@@ -18,7 +18,7 @@ import com.example.remindbuddy.db.Reminder
 import java.util.*
 
 
-class ReminderAdapter(context: Context, private val list: List<Reminder>) : BaseAdapter() {
+class ReminderAdapter(context: Context, private val list: List<Reminder>, private val isShowAll: Boolean) : BaseAdapter() {
 
     private val inflater: LayoutInflater =
         context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -52,18 +52,21 @@ class ReminderAdapter(context: Context, private val list: List<Reminder>) : Base
         // hide elements
         val reminderDate = list[position].reminderdate
         val reminderTime = list[position].remindertime
-        val dateParts: List<String> = reminderDate.split(" ")
-        val day = dateParts[0].toInt()
-        var month = dateParts[1]
-        val year = dateParts[2].toInt()
-        month = MONTHS.indexOf(month).toString()
-        val hourParts: List<String> = reminderTime.split(":")
-        val hour = hourParts[0].toInt()
-        var minute = hourParts[1].toInt()
+        if(reminderTime != "" && reminderDate!="" ) {
+            val dateParts: List<String> = reminderDate.split(" ")
+            val day = dateParts[0].toInt()
+            var month = dateParts[1]
+            val year = dateParts[2].toInt()
+            month = MONTHS.indexOf(month).toString()
+            val hourParts: List<String> = reminderTime.split(":")
+            val hour = hourParts[0].toInt()
+            var minute = hourParts[1].toInt()
 
-        val reminderCalender = GregorianCalendar(year, month.toInt(), day, hour, minute, 0)
-        if (reminderCalender.timeInMillis > Calendar.getInstance().timeInMillis) {
-            return inflater.inflate(R.layout.blank_layout, null, false);
+
+            val reminderCalender = GregorianCalendar(year, month.toInt(), day, hour, minute, 0)
+            if (reminderCalender.timeInMillis > Calendar.getInstance().timeInMillis && !isShowAll) {
+                return inflater.inflate(R.layout.blank_layout, null, false);
+            }
         }
 
         if(list[position].icon != "") {

@@ -39,7 +39,7 @@ class ReminderWorker(context: Context, params: WorkerParameters)
             applicationContext,
             "default"
         )
-                .setContentTitle(applicationContext.getString(R.string.app_name))
+                .setContentTitle(applicationContext.getString(R.string.app_display_name))
                 .setContentText(message)
                 .setStyle(NotificationCompat.BigTextStyle().bigText(message))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
