@@ -52,6 +52,10 @@ class ReminderAdapter(context: Context, private val list: List<Reminder>, privat
         // hide elements
         val reminderDate = list[position].reminderdate
         val reminderTime = list[position].remindertime
+
+        val locationX = list[position].locationx
+        val locationY = list[position].locationy
+
         if(reminderTime != "" && reminderDate!="" ) {
             val dateParts: List<String> = reminderDate.split(" ")
             val day = dateParts[0].toInt()
@@ -64,9 +68,13 @@ class ReminderAdapter(context: Context, private val list: List<Reminder>, privat
 
 
             val reminderCalender = GregorianCalendar(year, month.toInt(), day, hour, minute, 0)
-            if (reminderCalender.timeInMillis > Calendar.getInstance().timeInMillis && !isShowAll) {
+            if (reminderCalender.timeInMillis > Calendar.getInstance().timeInMillis  && !isShowAll) {
                 return inflater.inflate(R.layout.blank_layout, null, false);
             }
+        }
+
+        if((!locationX.isEmpty() || !locationY.isEmpty()) &&!isShowAll) {
+            return inflater.inflate(R.layout.blank_layout, null, false);
         }
 
         if(list[position].icon != "") {
