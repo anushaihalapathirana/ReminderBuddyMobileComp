@@ -101,6 +101,7 @@ class HomeFragment : Fragment() {
                     intent.putExtra("reminderdate", selectedReminder.reminderdate )
                     intent.putExtra("image", selectedReminder.image )
                     intent.putExtra("icon", selectedReminder.icon)
+                    intent.putExtra("source", "edit")
                     startActivity(intent)
                 }
                 .show()

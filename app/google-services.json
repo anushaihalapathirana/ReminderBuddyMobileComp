@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "114774609815",
+    "project_id": "remindbuddy-305516",
+    "storage_bucket": "remindbuddy-305516.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:114774609815:android:468930179805729544fed2",
+        "android_client_info": {
+          "package_name": "com.example.remindbuddy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "114774609815-5en6bctj3mi5i5pger13to39k26jdl7n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCKeVbchMrMJjvUBsibyirWhxTV-3A7ZVQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "114774609815-5en6bctj3mi5i5pger13to39k26jdl7n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

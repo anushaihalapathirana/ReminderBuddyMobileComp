@@ -15,8 +15,10 @@ import android.speech.SpeechRecognizer
 import android.util.Base64
 import android.util.Log
 import android.view.View
+import android.view.View.OnTouchListener
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.room.Room
 import androidx.work.*
 import com.example.remindbuddy.db.AppDatabase
@@ -24,12 +26,9 @@ import com.example.remindbuddy.db.Reminder
 import com.example.remindbuddy.ui.home.HomeFragment
 import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.*
 import java.util.concurrent.TimeUnit
-import kotlin.math.min
-import androidx.lifecycle.Observer
+import kotlin.math.ln
 
 
 class AddTaskActivity : AppCompatActivity() {
@@ -69,6 +68,8 @@ class AddTaskActivity : AppCompatActivity() {
     private var imagestr = ""
     lateinit var iconimg: ImageView
     lateinit var addTaskText: TextView
+    var lat =""
+    var lng = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,6 +78,7 @@ class AddTaskActivity : AppCompatActivity() {
         title = findViewById(R.id.editTextTextPersonName5)
         description = findViewById<EditText>(R.id.editTextTextMultiLine)
         val location = findViewById<EditText>(R.id.editTextTextPersonName6)
+
 
         val dateText = findViewById<EditText>(R.id.editTextDate)
         val timeText = findViewById<EditText>(R.id.editTextTime)
@@ -98,13 +100,34 @@ class AddTaskActivity : AppCompatActivity() {
             askSpeechInput()
         }
 
+        location.setOnClickListener {
+            startActivity(Intent(applicationContext, MapsActivity::class.java)
+                .putExtra("title", title.text.toString() )
+                .putExtra("message", description.text.toString())
+                .putExtra("remindertime", timeText.text.toString())
+                .putExtra("reminderdate",dateText.text.toString())
+            )
+        }
+
         val speechdesc = findViewById<Button>(R.id.speechdesc)
         speechdesc.setOnClickListener {
             askSpeechInputForDescription()
         }
 
         val extras = intent.extras
-        if (extras != null) {
+
+        if (extras != null && extras.getString("source") == "map") {
+            lat = extras.getString("lat").toString()
+            lng = extras.getString("lng").toString()
+
+            location.setText(lat+", "+ lng)
+            title.setText(extras.getString("title").toString())
+            description.setText(extras.getString("message").toString())
+            timeText.setText(extras.getString("remindertime").toString())
+            dateText.setText(extras.getString("reminderdate").toString())
+        }
+
+        if (extras != null && extras.getString("source") == "edit") {
             isUpdate = true
             uid = extras.getInt("uid")
             title.setText(extras.getString("title"))
@@ -112,6 +135,7 @@ class AddTaskActivity : AppCompatActivity() {
             location.setText(extras.getString("locationx"))
             dateText.setText(extras.getString("reminderdate"))
             timeText.setText(extras.getString("remindertime"))
+            location.setText(extras.getString("locationx")+", "+ extras.getString("locationy"))
             addReminder.setText("update")
             addTaskText.setText("Update the Task")
 
@@ -220,26 +244,34 @@ class AddTaskActivity : AppCompatActivity() {
                     img = encodeImage(bitmap).toString()
                 }
 
-                val reminderCalenderupdate = GregorianCalendar(calyear, calmonth, calday, hourOfDay, minuteOfHour, 0)
+                val reminderCalenderupdate = GregorianCalendar(
+                    calyear,
+                    calmonth,
+                    calday,
+                    hourOfDay,
+                    minuteOfHour,
+                    0
+                )
                 AsyncTask.execute {
                     val db = Room.databaseBuilder(
                         applicationContext,
                         AppDatabase::class.java,
                         getString(R.string.dbFileName)
                     ).build()
+                    val loc = location.text.split(",")
                     db.reminderDao().update(
                         uid,
                         title.text.toString(),
                         description.text.toString(),
-                        location.text.toString(),
-                        location.text.toString(),
+                        loc[0],
+                        loc[1],
                         timeText.text.toString(),
                         dateText.text.toString(),
                         img,
-                    "1",
-                            selectedIcon,
-                            false,
-                            currentDate.toString(),
+                        "1",
+                        selectedIcon,
+                        false,
+                        currentDate.toString(),
                     )
                     db.close()
                     if (reminderCalenderupdate.timeInMillis > Calendar.getInstance().timeInMillis) {
@@ -259,9 +291,9 @@ class AddTaskActivity : AppCompatActivity() {
                 }
                 if(reminderCalenderupdate.timeInMillis>Calendar.getInstance().timeInMillis){
                     Toast.makeText(
-                            applicationContext,
-                            "Reminder updated",
-                            Toast.LENGTH_SHORT
+                        applicationContext,
+                        "Reminder updated",
+                        Toast.LENGTH_SHORT
                     ).show()
                 }
             } else {
@@ -269,8 +301,8 @@ class AddTaskActivity : AppCompatActivity() {
                     null,
                     title = title.text.toString(),
                     message = description.text.toString(),
-                    locationx = location.text.toString(),
-                    locationy = location.text.toString(),
+                    locationx = lat,
+                    locationy = lng,
                     remindertime = timeText.text.toString(),
                     reminderdate = dateText.text.toString(),
                     image = imagestr,
@@ -280,7 +312,14 @@ class AddTaskActivity : AppCompatActivity() {
                     creationtime = timeText.text.toString(),
                 )
 
-                val reminderCalender = GregorianCalendar(calyear,calmonth,calday,hourOfDay, minuteOfHour,0)
+                val reminderCalender = GregorianCalendar(
+                    calyear,
+                    calmonth,
+                    calday,
+                    hourOfDay,
+                    minuteOfHour,
+                    0
+                )
 
                 AsyncTask.execute {
                     //save reminder to room datbase
@@ -313,21 +352,22 @@ class AddTaskActivity : AppCompatActivity() {
 
                 if(reminderCalender.timeInMillis>Calendar.getInstance().timeInMillis){
                     Toast.makeText(
-                            applicationContext,
-                            "Reminder set",
-                            Toast.LENGTH_SHORT
+                        applicationContext,
+                        "Reminder set",
+                        Toast.LENGTH_SHORT
                     ).show()
                 }
 
             }
             finish()
+            startActivity(Intent(applicationContext, MainActivity::class.java))
         }
 
         WorkManager.getInstance(this).getWorkInfoByIdLiveData(request.build().id)
             .observe(this, Observer {
 
                 val status: String = it.state.name
-                Toast.makeText(this,status, Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, status, Toast.LENGTH_SHORT).show()
             })
 
 
@@ -338,7 +378,10 @@ class AddTaskActivity : AppCompatActivity() {
             Toast.makeText(this, "Speech Recognition is not available", Toast.LENGTH_SHORT).show()
         } else {
             val i = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
-            i.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+            i.putExtra(
+                RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
+            )
             i.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
             i.putExtra(RecognizerIntent.EXTRA_PROMPT, "Add task description")
             startActivityForResult(i, RQ_SPEECH_DEC)
@@ -350,7 +393,10 @@ class AddTaskActivity : AppCompatActivity() {
             Toast.makeText(this, "Speech Recognition is not available", Toast.LENGTH_SHORT).show()
         } else {
             val i = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
-            i.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+            i.putExtra(
+                RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
+            )
             i.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
             i.putExtra(RecognizerIntent.EXTRA_PROMPT, "Add Task")
             startActivityForResult(i, RQ_SPEECH_REC)
@@ -405,7 +451,10 @@ class AddTaskActivity : AppCompatActivity() {
                 val popup = PopupMenu::class.java.getDeclaredField("mPopup")
                 popup.isAccessible = true
                 val menu = popup.get(popupmenu)
-                menu.javaClass.getDeclaredMethod("setForceShowIcon", Boolean::class.java).invoke(menu, true)
+                menu.javaClass.getDeclaredMethod("setForceShowIcon", Boolean::class.java).invoke(
+                    menu,
+                    true
+                )
             } catch (e: Exception) {
                 e.printStackTrace()
             } finally {
