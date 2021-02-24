@@ -17,10 +17,7 @@ import androidx.core.app.NotificationCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.room.Room
-import com.example.remindbuddy.AddTaskActivity
-import com.example.remindbuddy.R
-import com.example.remindbuddy.ReminderAdapter
-import com.example.remindbuddy.ReminderReceiver
+import com.example.remindbuddy.*
 import com.example.remindbuddy.db.AppDatabase
 import com.example.remindbuddy.db.Reminder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -148,6 +145,59 @@ class HomeFragment : Fragment() {
 
     }
 
+    companion object {
+        var locationArrived = false
+
+        fun locationTriggered(context: Context, message: String) :Boolean{
+            if(message == "inlocation") {
+                locationArrived = true
+            }
+            return locationArrived
+        }
+
+        fun setRemnder(context: Context, uid: Int, timeInMillis: Long, message: String) {
+            val intent = Intent(context, TimeLocationReceiver::class.java)
+            intent.putExtra("uid", uid)
+            intent.putExtra("message", message)
+
+            // create a pending intent to a  future action with a uniquie request code i.e uid
+            val pendingIntent =
+                PendingIntent.getBroadcast(context, uid, intent, PendingIntent.FLAG_ONE_SHOT)
+
+            //create a service to moniter and execute the fure action.
+            val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+                alarmManager.setExact(AlarmManager.RTC, timeInMillis, pendingIntent)
+            }
+        }
 
 
+        fun showNotification(context: Context, message: String) {
+            val CHANNEL_ID = "REMINDER_NOTIFICATION_CHANNEL"
+            var notificationID = 1554
+            notificationID += Random(notificationID).nextInt(1,30)
+
+            val notificationBuilder = NotificationCompat.Builder(context.applicationContext, CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_baseline_alarm_on_24)
+                .setContentTitle(context.getString(R.string.app_display_name))
+                .setContentText(message)
+                .setStyle(NotificationCompat.BigTextStyle().bigText(message))
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+
+            val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                val channel = NotificationChannel (
+                    CHANNEL_ID,
+                    context.getString(R.string.app_name),
+                    NotificationManager.IMPORTANCE_DEFAULT
+                ).apply {
+                    description = context.getString(R.string.app_name)
+                }
+
+                notificationManager.createNotificationChannel(channel)
+            }
+            notificationManager.notify(notificationID, notificationBuilder.build())
+        }
+    }
 }

@@ -2,6 +2,7 @@ package com.example.remindbuddy
 
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -17,10 +18,17 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.CircleOptions
+import com.google.firebase.ktx.Firebase
 import java.util.*
 
 const val LOCATION_REQUEST_CODE = 123
+const val GEOFENCE_LOCATION_REQUEST_CODE = 12345
 const val CAMERA_ZOOM_LEVEL = 13f
+const val GEOFENCE_RADIUS = 500
+const val GEOFENCE_ID = "REMINDER_GEOFENCE_ID"
+const val GEOFENCE_EXPIRATION = 10*24*60*60*1000 //10 days
+const val GEOFENCE_DWELL_DELAY = 10*1000 //to sec
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -116,6 +124,18 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                     .snippet(snippet)
             )
 
+            //show circle
+            mMap.addCircle(
+
+                CircleOptions().center(latlang)
+                    .strokeColor(Color.argb(50,70,70,70))
+                    .fillColor(Color.argb(70,150,150,150))
+                    .radius(GEOFENCE_RADIUS.toDouble())
+            )
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlang, CAMERA_ZOOM_LEVEL))
+
+//            createGeofence(latlang, key!!, geofencingClient)
+
             startActivity(Intent(
                 applicationContext,
                 AddTaskActivity::class.java)
@@ -126,6 +146,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 .putExtra("message", extras.getString("message"))
                 .putExtra("remindertime", extras.getString("remindertime"))
                 .putExtra("reminderdate",extras.getString("reminderdate"))
+                .putExtra("latlang", latlang)
+
 
             )
         }

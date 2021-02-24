@@ -1,13 +1,18 @@
 package com.example.remindbuddy
 
+import android.app.AlarmManager
 import android.app.DatePickerDialog
+import android.app.PendingIntent
 import android.app.TimePickerDialog
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.AsyncTask
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.speech.RecognizerIntent
@@ -15,20 +20,26 @@ import android.speech.SpeechRecognizer
 import android.util.Base64
 import android.util.Log
 import android.view.View
-import android.view.View.OnTouchListener
 import android.widget.*
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.room.Room
 import androidx.work.*
 import com.example.remindbuddy.db.AppDatabase
 import com.example.remindbuddy.db.Reminder
 import com.example.remindbuddy.ui.home.HomeFragment
+import com.google.android.gms.location.Geofence
+import com.google.android.gms.location.GeofencingClient
+import com.google.android.gms.location.GeofencingRequest
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.model.LatLng
 import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
-import kotlin.math.ln
 
 
 class AddTaskActivity : AppCompatActivity() {
@@ -46,6 +57,9 @@ class AddTaskActivity : AppCompatActivity() {
     private var calday = 0
     private var hourOfDay = 0
     private var minuteOfHour = 0
+    private lateinit var geofencingClient: GeofencingClient
+
+
     val MONTHS = listOf<String>(
         "Jan",
         "Feb",
@@ -70,10 +84,13 @@ class AddTaskActivity : AppCompatActivity() {
     lateinit var addTaskText: TextView
     var lat =""
     var lng = ""
+    var latlang: LatLng? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_task)
+
+        geofencingClient = LocationServices.getGeofencingClient(this)
 
         title = findViewById(R.id.editTextTextPersonName5)
         description = findViewById<EditText>(R.id.editTextTextMultiLine)
@@ -119,12 +136,14 @@ class AddTaskActivity : AppCompatActivity() {
         if (extras != null && extras.getString("source") == "map") {
             lat = extras.getString("lat").toString()
             lng = extras.getString("lng").toString()
+            latlang = extras.get("latlang") as LatLng
 
             location.setText(lat+", "+ lng)
             title.setText(extras.getString("title").toString())
             description.setText(extras.getString("message").toString())
             timeText.setText(extras.getString("remindertime").toString())
             dateText.setText(extras.getString("reminderdate").toString())
+
         }
 
         if (extras != null && extras.getString("source") == "edit") {
@@ -331,9 +350,14 @@ class AddTaskActivity : AppCompatActivity() {
                     val uuid = db.reminderDao().insert(reminder).toInt()
                     db.close()
 
-                    // set reminder
-                    if (reminderCalender.timeInMillis > Calendar.getInstance().timeInMillis) {
+                    // set reminder if location set but time not set
+                    if(latlang != null && (reminderCalender.timeInMillis < Calendar.getInstance().timeInMillis )) {
+                        createGeofence(latlang!!, uuid, geofencingClient)
+                        Log.d("Location Reminder", "Location Reminder Set")
+                    }
 
+                    // set reminder when time is set but location is not set
+                    if (reminderCalender.timeInMillis > Calendar.getInstance().timeInMillis && (latlang == null)) {
                         val message =
                                 " ${reminder.title}  "
 
@@ -348,12 +372,16 @@ class AddTaskActivity : AppCompatActivity() {
 
                     }
 
+                    if(reminderCalender.timeInMillis > Calendar.getInstance().timeInMillis && (latlang != null)) {
+                        createGeofenceandTime(applicationContext, latlang!!, uuid, geofencingClient, reminderCalender.timeInMillis, reminder.title.toString())
+                        Log.d("Location Reminder", "Location and Time Reminder Set")
+                    }
                 }
 
                 if(reminderCalender.timeInMillis>Calendar.getInstance().timeInMillis){
                     Toast.makeText(
                         applicationContext,
-                        "Reminder set",
+                        "Time Reminder set",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -372,7 +400,79 @@ class AddTaskActivity : AppCompatActivity() {
 
 
     }
-    
+
+    private fun createGeofenceandTime(
+        context: Context,
+        latlang: LatLng,
+        uuid: Int,
+        geofencingClient: GeofencingClient,
+        timeInMillis: Long,
+        message: String
+    ) {
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+            createTimeGeofence(context,latlang!!, uuid, geofencingClient,timeInMillis,
+                message)
+        }
+
+    }
+
+    @RequiresApi(Build.VERSION_CODES.KITKAT)
+    private fun createTimeGeofence(context: Context,
+                                   location: LatLng,
+                                   uuid: Int,
+                                   geofencingClient: GeofencingClient,
+                                   timeInMillis: Long,
+                                   message: String) {
+        val geofence = Geofence.Builder()
+            .setRequestId(GEOFENCE_ID)
+            .setCircularRegion(location.latitude,location.longitude, 500.toFloat())
+            .setExpirationDuration(GEOFENCE_EXPIRATION.toLong())
+            .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER or Geofence.GEOFENCE_TRANSITION_DWELL)
+            .setLoiteringDelay(GEOFENCE_DWELL_DELAY)
+            .build()
+
+        val geofenceRequest = GeofencingRequest.Builder()
+            .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
+            .addGeofence(geofence)
+            .build()
+
+        val intent = Intent(this, TimeLocationReceiver::class.java)
+            .putExtra("key", uuid)
+            .putExtra("message", message)
+
+        val pendingIntent = PendingIntent.getBroadcast(
+            applicationContext,
+            uid,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT
+        )
+
+        //create a service to moniter and execute the fure action.
+        val alarmManager = this.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            if(ContextCompat.checkSelfPermission(
+                    applicationContext,
+                    android.Manifest.permission.ACCESS_BACKGROUND_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(android.Manifest.permission.ACCESS_BACKGROUND_LOCATION),
+                    GEOFENCE_LOCATION_REQUEST_CODE
+                )
+            } else {
+                geofencingClient.addGeofences(geofenceRequest,pendingIntent)
+                alarmManager.setExact(AlarmManager.RTC, timeInMillis, pendingIntent)
+            }
+        } else {
+            geofencingClient.addGeofences(geofenceRequest,pendingIntent)
+            alarmManager.setExact(AlarmManager.RTC, timeInMillis, pendingIntent)
+        }
+
+    }
+
     private fun askSpeechInputForDescription() {
         if(!SpeechRecognizer.isRecognitionAvailable(this)) {
             Toast.makeText(this, "Speech Recognition is not available", Toast.LENGTH_SHORT).show()
@@ -464,6 +564,52 @@ class AddTaskActivity : AppCompatActivity() {
 
         }
     }
+
+    private fun createGeofence(location: LatLng, key: Int, geofencingClient: GeofencingClient) {
+        val geofence = Geofence.Builder()
+            .setRequestId(GEOFENCE_ID)
+            .setCircularRegion(location.latitude,location.longitude, 500.toFloat())
+            .setExpirationDuration(GEOFENCE_EXPIRATION.toLong())
+            .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER or Geofence.GEOFENCE_TRANSITION_DWELL)
+            .setLoiteringDelay(GEOFENCE_DWELL_DELAY)
+            .build()
+
+        val geofenceRequest = GeofencingRequest.Builder()
+            .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
+            .addGeofence(geofence)
+            .build()
+
+        val intent = Intent(this, ReminderReceiver::class.java)
+            .putExtra("key", key)
+            .putExtra("message", "inlocation")
+
+        val pendingIntent = PendingIntent.getBroadcast(
+            applicationContext,
+            0,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT
+        )
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            if(ContextCompat.checkSelfPermission(
+                    applicationContext,
+                    android.Manifest.permission.ACCESS_BACKGROUND_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(android.Manifest.permission.ACCESS_BACKGROUND_LOCATION),
+                    GEOFENCE_LOCATION_REQUEST_CODE
+                )
+            } else {
+                geofencingClient.addGeofences(geofenceRequest,pendingIntent)
+            }
+        } else {
+            geofencingClient.addGeofences(geofenceRequest,pendingIntent)
+        }
+
+    }
+
+
 
     private fun manageImageFromUri(imageUri: Uri?) {
         var bitmap: Bitmap? = null
