@@ -448,6 +448,8 @@ class AddTaskActivity : AppCompatActivity() {
             PendingIntent.FLAG_UPDATE_CURRENT
         )
 
+        val alarmPendingIntent =PendingIntent.getBroadcast(context,uid,intent,PendingIntent.FLAG_ONE_SHOT)
+
         //create a service to moniter and execute the fure action.
         val alarmManager = this.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
@@ -464,11 +466,11 @@ class AddTaskActivity : AppCompatActivity() {
                 )
             } else {
                 geofencingClient.addGeofences(geofenceRequest,pendingIntent)
-                alarmManager.setExact(AlarmManager.RTC, timeInMillis, pendingIntent)
+                alarmManager.setExact(AlarmManager.RTC, timeInMillis, alarmPendingIntent)
             }
         } else {
             geofencingClient.addGeofences(geofenceRequest,pendingIntent)
-            alarmManager.setExact(AlarmManager.RTC, timeInMillis, pendingIntent)
+            alarmManager.setExact(AlarmManager.RTC, timeInMillis, alarmPendingIntent)
         }
 
     }
