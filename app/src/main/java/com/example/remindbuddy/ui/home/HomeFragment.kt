@@ -6,12 +6,10 @@ import android.content.Intent
 import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.util.Log
+import android.view.*
 import android.widget.AdapterView
 import android.widget.ListView
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.NotificationCompat
 import androidx.fragment.app.Fragment
@@ -24,6 +22,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import kotlin.random.Random
 
+
 class HomeFragment : Fragment() {
 
     private lateinit var homeViewModel: HomeViewModel
@@ -31,14 +30,15 @@ class HomeFragment : Fragment() {
     var isShowAll: Boolean = false
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         homeViewModel =
             ViewModelProvider(this).get(HomeViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_home, container, false)
         listView = root.findViewById(R.id.reminder_list)
+        setHasOptionsMenu(true);
 
         refreshListView()
 
@@ -71,9 +71,9 @@ class HomeFragment : Fragment() {
                     AsyncTask.execute {
                         val db = Room
                             .databaseBuilder(
-                                context as Activity,
-                                AppDatabase::class.java,
-                                getString(R.string.dbFileName)
+                                    context as Activity,
+                                    AppDatabase::class.java,
+                                    getString(R.string.dbFileName)
                             )
                             .build()
                         db.reminderDao().delete(selectedReminder.uid!!)
@@ -89,14 +89,14 @@ class HomeFragment : Fragment() {
                 .setNegativeButton("Edit") { dialog, _ ->
                     val intent = Intent(context as Activity, AddTaskActivity::class.java)
                     intent.putExtra("uid", selectedReminder.uid)
-                    intent.putExtra("title", selectedReminder.title )
-                    intent.putExtra("message", selectedReminder.message )
-                    intent.putExtra("message", selectedReminder.message )
-                    intent.putExtra("locationx", selectedReminder.locationx )
-                    intent.putExtra("locationy", selectedReminder.locationy )
-                    intent.putExtra("remindertime", selectedReminder.remindertime )
-                    intent.putExtra("reminderdate", selectedReminder.reminderdate )
-                    intent.putExtra("image", selectedReminder.image )
+                    intent.putExtra("title", selectedReminder.title)
+                    intent.putExtra("message", selectedReminder.message)
+                    intent.putExtra("message", selectedReminder.message)
+                    intent.putExtra("locationx", selectedReminder.locationx)
+                    intent.putExtra("locationy", selectedReminder.locationy)
+                    intent.putExtra("remindertime", selectedReminder.remindertime)
+                    intent.putExtra("reminderdate", selectedReminder.reminderdate)
+                    intent.putExtra("image", selectedReminder.image)
                     intent.putExtra("icon", selectedReminder.icon)
                     intent.putExtra("source", "edit")
                     startActivity(intent)
@@ -105,6 +105,21 @@ class HomeFragment : Fragment() {
 
         }
         return root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        // TODO Add your menu entries here
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_settings ->
+                startActivity(Intent(context as Activity, CurrentLocationMapActivity::class.java))
+            else -> {
+            }
+        }
+        return false
     }
 
     override fun onResume() {
@@ -120,9 +135,9 @@ class HomeFragment : Fragment() {
     inner class LoadReminderInfoEntries : AsyncTask<String?, String?, List<Reminder>>() {
         override fun doInBackground(vararg params: String?): List<Reminder> {
             val db = Room.databaseBuilder(
-                context as Activity,
-                AppDatabase::class.java,
-                getString(R.string.dbFileName)
+                    context as Activity,
+                    AppDatabase::class.java,
+                    getString(R.string.dbFileName)
             )
                 .build()
             val reminderInfos = db.reminderDao().getReminderInfo()
@@ -175,7 +190,7 @@ class HomeFragment : Fragment() {
         fun showNotification(context: Context, message: String) {
             val CHANNEL_ID = "REMINDER_NOTIFICATION_CHANNEL"
             var notificationID = 1554
-            notificationID += Random(notificationID).nextInt(1,30)
+            notificationID += Random(notificationID).nextInt(1, 30)
 
             val notificationBuilder = NotificationCompat.Builder(context.applicationContext, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_baseline_alarm_on_24)
@@ -187,10 +202,10 @@ class HomeFragment : Fragment() {
             val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                val channel = NotificationChannel (
-                    CHANNEL_ID,
-                    context.getString(R.string.app_name),
-                    NotificationManager.IMPORTANCE_DEFAULT
+                val channel = NotificationChannel(
+                        CHANNEL_ID,
+                        context.getString(R.string.app_name),
+                        NotificationManager.IMPORTANCE_DEFAULT
                 ).apply {
                     description = context.getString(R.string.app_name)
                 }

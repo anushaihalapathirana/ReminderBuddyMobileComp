@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -136,20 +137,24 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
 //            createGeofence(latlang, key!!, geofencingClient)
 
-            startActivity(Intent(
-                applicationContext,
-                AddTaskActivity::class.java)
-                .putExtra("source", "map")
-                .putExtra("lat",latlang.latitude.toString())
-                .putExtra("lng", latlang.longitude.toString())
-                .putExtra("title", extras.getString("title") )
-                .putExtra("message", extras.getString("message"))
-                .putExtra("remindertime", extras.getString("remindertime"))
-                .putExtra("reminderdate",extras.getString("reminderdate"))
-                .putExtra("latlang", latlang)
+            Handler().postDelayed(Runnable {
+                startActivity(Intent(
+                        applicationContext,
+                        AddTaskActivity::class.java)
+                        .putExtra("source", "map")
+                        .putExtra("lat",latlang.latitude.toString())
+                        .putExtra("lng", latlang.longitude.toString())
+                        .putExtra("title", extras.getString("title") )
+                        .putExtra("message", extras.getString("message"))
+                        .putExtra("remindertime", extras.getString("remindertime"))
+                        .putExtra("reminderdate",extras.getString("reminderdate"))
+                        .putExtra("latlang", latlang)
 
 
-            )
+                )
+            }, 1000)
+
+
         }
     }
 

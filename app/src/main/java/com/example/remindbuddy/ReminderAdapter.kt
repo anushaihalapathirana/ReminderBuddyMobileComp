@@ -73,7 +73,7 @@ class ReminderAdapter(context: Context, private val list: List<Reminder>, privat
             }
         }
 
-        if((!locationX.isEmpty() || !locationY.isEmpty()) &&!isShowAll) {
+        if((!locationX.isEmpty() || !locationY.isEmpty()) && reminderTime == "" && !isShowAll) {
             return inflater.inflate(R.layout.blank_layout, null, false);
         }
 

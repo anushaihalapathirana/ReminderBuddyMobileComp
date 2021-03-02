@@ -36,8 +36,11 @@
             android:value="@string/google_maps_key" />
 
         <activity
+            android:name=".CurrentLocationMapActivity"
+            android:label="@string/title_activity_current_location_map"></activity>
+        <activity
             android:name=".MapsActivity"
-            android:label="@string/title_activity_maps"></activity>
+            android:label="@string/title_activity_maps" />
         <activity android:name=".AddTaskActivity" />
         <activity android:name=".EditProfileActivity" />
         <activity android:name=".SignupActivity" />
@@ -56,7 +59,7 @@
         </activity>
 
         <receiver android:name=".ReminderReceiver" />
-        <receiver android:name=".TimeLocationReceiver"/>
+        <receiver android:name=".TimeLocationReceiver" />
     </application>
 
 </manifest>

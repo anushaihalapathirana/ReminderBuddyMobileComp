@@ -440,6 +440,7 @@ class AddTaskActivity : AppCompatActivity() {
         val intent = Intent(this, TimeLocationReceiver::class.java)
             .putExtra("key", uuid)
             .putExtra("message", message)
+                .putExtra("date", timeInMillis.toString())
 
         val pendingIntent = PendingIntent.getBroadcast(
             applicationContext,
@@ -470,7 +471,7 @@ class AddTaskActivity : AppCompatActivity() {
             }
         } else {
             geofencingClient.addGeofences(geofenceRequest,pendingIntent)
-            alarmManager.setExact(AlarmManager.RTC, timeInMillis, alarmPendingIntent)
+             alarmManager.setExact(AlarmManager.RTC, timeInMillis, alarmPendingIntent)
         }
 
     }
@@ -581,9 +582,11 @@ class AddTaskActivity : AppCompatActivity() {
             .addGeofence(geofence)
             .build()
 
+        val message =
+                " ${title.text}  "
         val intent = Intent(this, ReminderReceiver::class.java)
             .putExtra("key", key)
-            .putExtra("message", "inlocation")
+            .putExtra("message", message)
 
         val pendingIntent = PendingIntent.getBroadcast(
             applicationContext,
